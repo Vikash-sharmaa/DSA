@@ -1,0 +1,59 @@
+Points to remember :- 
+	1. Subsequence - contiguous / non contiguous  ex- [1,2,3] => [1,2] || [1,3] are subsequence while [3,1] is not a subsequence.
+	2. Subset might be contiguous or might not be 
+	3. When there is more than one recursive calls - overlapping subproblems happens - hence DP is the option to go.
+	4. Choices - recursion - if two recursive calls - Optimal answer ===> DP
+	5. Always => first recursion -> then memorization -> then tabulation
+	6. For base condition : - think of the smallest valid input.
+
+
+3 types Knapsack problems :-
+	1. Fractional - (greedy)
+	2. 0/1
+	3. Unbounded
+
+
+
+0/1 Knapsack based Questions :- 
+	1. Subset sum
+	2. Equal sum partition
+	3. Count of subset sum
+	4. Minimum subset difference
+	5. Target sum
+Number of subset with given difference
+
+
+
+
+
+count subsequences following a condition :- 
+
+int function(){
+
+    base case:
+        condition satisfied - return 1;
+        condition not satisfied - return 0;
+    
+    left = function();
+    right = function();
+
+    [ if more than 2 recursion calls - use for loop and add them and return at last]
+
+    return left + right;
+}
+
+if subsequence following a condition exist or not :-
+
+boolean function(){
+
+    base case:
+        condition satisfied - return true;
+        condition not satisfied - return false;
+    
+    left = function();
+    right = function();
+
+    [ if more than 2 recursion calls - use for loop and add them and return at last]
+
+    return left || right;
+}
