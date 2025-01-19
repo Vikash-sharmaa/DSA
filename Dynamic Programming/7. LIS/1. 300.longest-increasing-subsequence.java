@@ -4,7 +4,10 @@
  * [300] Longest Increasing Subsequence
  */
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 /****************************************************************************************************************/
  /*
@@ -101,7 +104,7 @@ class Solution {
         return dp[n][lastTakenIndex] = Math.max(take,notTake);
     }
 
-
+/********************************************** Need to understand this again ******************************************************************/
 
     public int lengthOfLISTabulation(int[] nums) {
         int n = nums.length;
@@ -126,47 +129,100 @@ class Solution {
         return dp[0][0];
     }
 
-
-    /*
+/****************************************************************************************************************/
+    
+/*
         # logic: traverse the array from right to left . just the conversion of above logic and optimising the space to O(n).
         # e.g: LIS[2] means nums[2] will get appened(+1) to any of the LIS ahead of it,
         # (i.e if all the ele of of any of the LIS will be grater than nums[2] then we will add +1).     
         # very better one  
 
+        # Giving essence of Kadane's algorithm
+
+        # dp[i] -> depicts the LIS at index i
         # time: O(n^2)
      */
 
     public int lengthOfLISOptimized(int[] nums) {
-        int n = nums.length;
-        int[] LIS = new int[n];  // LIS[i] indicates the length of the LIS that ends at index 'i'.
-        
-        // Initialize the LIS array with 1, as the smallest LIS ending at any index is 1 (the element itself).
-        for (int i = 0; i < n; i++) {
-            LIS[i] = 1;
-        }
-        
-        // Calculate LIS for each index
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < i; j++) {  // Check all previous indices
-                if (nums[j] < nums[i]) {   // If nums[j] can be included in the LIS ending at i
-                    LIS[i] = Math.max(LIS[i], LIS[j] + 1);  // Update LIS[i] if including nums[j] gives a longer subsequence
+        int n=nums.length;
+        int[] dp=new int[n];
+        Arrays.fill(dp, 1);
+
+        for(int i=0;i<n;i++){
+            for(int j=0;j<i;j++){
+                if(nums[j]<nums[i]){
+                    dp[i]=Math.max(dp[i], 1+dp[j]);
                 }
             }
         }
-        
-        // Find the maximum value in the LIS array, which represents the length of the longest increasing subsequence
-        int maxLIS = 0;
-        for (int i = 0; i < n; i++) {
-            maxLIS = Math.max(maxLIS, LIS[i]);
+
+        int ans=0;
+        for(int i=0;i<n;i++){
+            ans=Math.max(ans, dp[i]);
         }
-        
-        return maxLIS;
+
+        return ans;
     }
 
+    /*
+    similar as above - no need to traverse the dp array again
+
+    public int lengthOfLISOptimized(int[] nums) {
+        int n=nums.length;
+        int[] dp=new int[n];
+        Arrays.fill(dp, 1);
+
+        int ans=1;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<i;j++){
+                if(nums[j]<nums[i]){
+                    dp[i]=Math.max(dp[i], 1+dp[j]);
+                }
+            }
+            ans=Math.max(ans, dp[i]);
+        }
+
+        return ans;
+    }
+         */
 
 
 
 
+
+         /***************************************************Best (Binary Search)**********************************************************/
+
+         public int lengthOfLISbinarySearch(int[] nums) {
+            // `res` will store the elements of the current longest increasing subsequence
+            List<Integer> res = new ArrayList<>();
+            
+            // Iterate through the array
+            for (int i = 0; i < nums.length; i++) {
+                // If the current number is greater than the last element of `res`, 
+                // it can be safely appended to maintain the increasing order
+                if (res.isEmpty() || nums[i] > res.get(res.size() - 1)) {
+                    res.add(nums[i]);
+                } else {
+                    // If the current number is not greater, find the position to replace
+                    // using binary search
+                    int ind = Collections.binarySearch(res, nums[i]);
+                    
+                    
+                    // If the number is not found, `Collections.binarySearch` returns
+                    // `-(insertion point) - 1`. We calculate the insertion point.
+                    if (ind < 0) ind = -ind - 1;
+                    System.out.println(ind);
+                    
+                    // Replace the element at the found index to maintain the smallest possible
+                    // elements for future replacements
+                    res.set(ind, nums[i]);
+                }
+            }
+            
+            // The size of `res` gives the length of the longest increasing subsequence
+            return res.size();
+        }
+        
 
 
 
@@ -190,7 +246,10 @@ class Solution {
         //return lengthOfLISRecursive(nums,n,n);
         Integer[][] dp=new Integer[n+1][n+1];
         //return lengthOfLISMemo(nums,n,n,dp);
-        return lengthOfLISTabulation(nums);
+        //return lengthOfLISTabulation(nums);
+
+        //return lengthOfLISOptimized(nums);
+        return lengthOfLISbinarySearch(nums);
     }
 
 }
