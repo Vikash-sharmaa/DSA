@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-/****************************************************************************************************************/
+/************************************************************************************************************************************************/
  /*
     # If we closely observe the problem then we can convert this problem to longest Common Subsequence Problem.
     # Firstly we will create another array of unique elements of original array and sort it. 
@@ -53,7 +53,7 @@ class Solution {
     }
 
 
-/****************************************************************************************************************/
+/************************************************************************************************************************************************/
 
 /*
     # Note vvvi: This is better one template in case of 'take' and 'notTake'  which there is 'notTake' option always there.
@@ -104,7 +104,7 @@ class Solution {
         return dp[n][lastTakenIndex] = Math.max(take,notTake);
     }
 
-/********************************************** Need to understand this again ******************************************************************/
+/************************************************************ Need to understand this again ********************************************************/
 
     public int lengthOfLISTabulation(int[] nums) {
         int n = nums.length;
@@ -129,7 +129,7 @@ class Solution {
         return dp[0][0];
     }
 
-/****************************************************************************************************************/
+/******************************************************************************************************************************************************/
     
 /*
         # logic: traverse the array from right to left . just the conversion of above logic and optimising the space to O(n).
@@ -190,7 +190,7 @@ class Solution {
 
 
 
-         /***************************************************Best (Binary Search)**********************************************************/
+/*********************************************************************** Best (Binary Search)**********************************************************/
 
          public int lengthOfLISbinarySearch(int[] nums) {
             // `res` will store the elements of the current longest increasing subsequence

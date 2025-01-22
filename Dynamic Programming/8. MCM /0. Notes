@@ -1,0 +1,37 @@
+	
+Tips :- 
+
+    1. String/ array will be given 
+	2. We will take i and j, usually these are end indices
+	3. Try to break it at k -> function call fun(i,k) and fun(k+1,j) these will bring temp answers.
+	4. Move k value -> again function call fun(i,k) and fun(k+1,j) these will bring temp answers. 
+	5. And so onn.
+	6. Using these temp answers , we will use some fun like max min etc. and will get the answer.
+ 
+
+
+
+
+
+General Format :- 
+
+        int solve(int[] a,int I,int j){
+            If(i>j) return 0;
+            for(int k=i;k<=j;k++){
+                tempAns = solve(i,k) + solve(k+1,i);
+                ans = max(ans,tempAns);
+            }
+            return ans;
+        }
+
+    // loop and max/min depends on ques ask
+ 
+
+
+
+Steps :-
+
+	1. Find I and j values.
+	2. Find right BC.
+    3. Move k => I to j
+
