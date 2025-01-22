@@ -1,3 +1,4 @@
+package Trees.Binary_Trees;
 /*
  * @lc app=leetcode id=987 lang=java
  *
@@ -9,12 +10,9 @@
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.PriorityQueue;
-import java.util.Queue;
 import java.util.TreeMap;
 
 /****************************************************************************************************************************************/

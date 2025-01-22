@@ -1,4 +1,4 @@
-package Trees;
+package Trees.Binary_Trees;
 
 public class TreeNode {
          int val;

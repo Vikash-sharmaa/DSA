@@ -1,3 +1,4 @@
+package Trees.Binary_Trees;
 /*
  * @lc app=leetcode id=100 lang=java
  *
