@@ -1,8 +1,25 @@
-package Trees.Binary_Trees;
+
 /*
  * @lc app=leetcode id=987 lang=java
  *
  * [987] Vertical Order Traversal of a Binary Tree
+ * 
+ * 
+    The intuition behind the vertical traversal is to group nodes based on their vertical lines and levels in a binary tree. 
+    Each node is associated with a "vertical line" (horizontal distance from the root) and a "level" (depth in the tree). Using a BFS approach, 
+    nodes are visited level by level while keeping track of their vertical lines and levels. A nested map (vertical line → level → nodes in a priority queue) 
+    is used to store nodes in sorted order for each vertical line and level. Finally, the nested map is processed to extract nodes in the required vertical order, 
+    maintaining sorted order within the same level.
+
+ * 
+ * 
+ * 
+ * Traverse nodes on each levels of each line
+ * 
+ *  Time Complexity: O(nlogk), where n is the number of nodes, and k is the maximum number of nodes in a single vertical level, due to the insertion and extraction operations in the priority queues.
+
+    Space Complexity: O(n), for storing nodes in the map and the BFS queue.
+
  */
 
 // @lc code=start
@@ -15,20 +32,22 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.TreeMap;
 
+import Trees.TreeNode;
+
 /****************************************************************************************************************************************/
 
 class Tuple {
     TreeNode node;
-    int line;
+    int verticalLine;
     int level;
 
     // Default constructor.
     Tuple() {}
 
     // Parameterized constructor to initialize the node, vertical line, and level.
-    Tuple(TreeNode node, int line, int level) {
+    Tuple(TreeNode node, int verticalLine, int level) {
         this.node = node;
-        this.line = line;
+        this.verticalLine = verticalLine;
         this.level = level;
     }
 }
@@ -54,7 +73,7 @@ class Solution {
             // Get the front of the queue, which represents the current node and its position.
             Tuple front = queue.pollFirst();
             TreeNode currentNode = front.node;
-            int currentVerticalLine = front.line; // The vertical line of the current node.
+            int currentVerticalLine = front.verticalLine; // The vertical line of the current node.
             int currentLevel = front.level;       // The level (depth) of the current node.
 
             // Add the current node to the map:

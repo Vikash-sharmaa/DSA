@@ -1,4 +1,8 @@
 package Hashing;
+
+import java.util.HashSet;
+import java.util.Set;
+
 class Solution {
     public boolean reportSpamNaive(String[] message, String[] bannedWords) {
         int count = 0;  // Counter for how many banned words are found in the message

@@ -1,0 +1,55 @@
+
+
+1. Definition:
+    - A Binary Search Tree (BST) is a binary tree in which each node has at most two children.
+    - For each node, the left subtree contains only nodes with keys less than the node's key.
+    - The right subtree contains only nodes with keys greater than the node's key.
+
+2. Properties:
+    - The left and right subtrees must also be binary search trees.
+    - In-order traversal of a BST yields the nodes in ascending order.
+
+3. Basic Operations:
+    - Search: O(log n) on average, O(n) in the worst case.
+    - Insertion: O(log n) on average, O(n) in the worst case.
+    - Deletion: O(log n) on average, O(n) in the worst case.
+
+4. Common Operations:
+    - Find Minimum: Traverse to the leftmost node.
+    - Find Maximum: Traverse to the rightmost node.
+    - Successor: The next node in in-order traversal.
+    - Predecessor: The previous node in in-order traversal.
+
+5. Balanced vs. Unbalanced:
+    - A balanced BST has a height of O(log n), ensuring efficient operations.
+    - An unbalanced BST can degrade to a linked list with a height of O(n).
+
+6. Variants:
+    - AVL Tree: A self-balancing BST where the difference in heights of left and right subtrees is at most one.
+    - Red-Black Tree: A self-balancing BST with an additional color property to ensure balance.
+
+7. Applications:
+    - Efficient searching, insertion, and deletion operations.
+    - Used in databases, file systems, and many other applications requiring dynamic set operations.
+
+8. Example:
+    
+         15
+        /  \
+      10   20
+     / \   / \
+    8  12 17 25
+    
+
+Remember to always consider the balance of the tree to maintain efficient operations.
+
+9. Mostly there will not be any duplicacy , but if any duplicacy happens - we will use -> node+freq or left<=root<right.
+
+10. Why use a BST?
+    - Efficient Searching: BSTs provide efficient searching with average time complexity of O(log n).
+    - Ordered Data: BSTs maintain elements in a sorted order, which is useful for in-order traversal.
+    - Dynamic Set Operations: BSTs support dynamic insertion and deletion of elements.
+    - Flexibility: BSTs can be easily modified to support additional operations like finding the k-th smallest element.
+
+    - generally in BST - the height of the tree is kept log(n)
+    - search in BT takes O(n)  - but search in BST takes O(log(n))

@@ -1,4 +1,4 @@
-package Trees.Binary_Trees;
+
 /*
  * @lc app=leetcode id=226 lang=java
  *
@@ -6,6 +6,8 @@ package Trees.Binary_Trees;
  */
 
 // @lc code=start
+
+import Trees.TreeNode;
 
 class Solution {
 
