@@ -1,0 +1,261 @@
+https://leetcode.com/discuss/study-guide/3903992/Graph-Its-Implementation-And-Some-popular-BFSDFS-Problems
+
+https://leetcode.com/discuss/study-guide/1326900/graph-algorithms-problems-to-practice
+
+https://leetcode.com/discuss/study-guide/5757797/Solved-all-Graph-problems-in-100-days
+
+
+
+A graph is a data structure that consists of a set of nodes (vertices) and a set of edges that connect pairs of nodes.
+
+
+Types of Graphs:-
+
+    1. Undirected Graph  : A graph in which edges have no direction.
+    2. Directed Graph (Digraph) : A graph in which edges have a direction.
+    3. Weighted Graph  : A graph in which edges have weights.
+    4. Unweighted Graph  : A graph in which edges do not have weights.
+    5. Cyclic Graph: A graph that contains at least one cycle, which is a closed path that starts and ends at the same vertex, passing through one or more vertices.
+    6. Acyclic Graph: A graph that does not contain any cycles. It is a special type of graph with no closed loops.
+    7. Connected Graph: A graph where there is a path between every pair of vertices. All vertices are reachable from any other vertex through a sequence of edges.
+    8. Disconnected Graph: A graph that contains multiple connected components, where some vertices are not reachable from others.
+
+
+
+Graph Traversal:-
+
+    1. Depth First Search (DFS)  : An algorithm for traversing or searching tree or graph data structures. It starts at the root and explores as far as possible along each branch before backtracking.
+    2. Breadth First Search (BFS)  : An algorithm for traversing or searching tree or graph data structures. It starts at the root and explores the neighbor nodes at the present depth prior to moving on to the nodes at the next depth level.
+
+
+
+Important Terms:-
+
+    1. Vertex (Node)  : Fundamental unit of which graphs are formed.
+    2. Edge (Link)  : Connection between two vertices.
+    3. Degree  : Number of edges connected to a vertex.
+    4. Path  : Sequence of edges that connect a sequence of vertices.
+    5. Cycle  : Path that starts and ends at the same vertex.
+    6. Connected Graph  : There is a path between every pair of vertices.
+    7. Disconnected Graph  : There is at least one pair of vertices that are not connected by a path.
+
+
+
+Applications of Graphs:-
+
+    1. Social Networks
+    2. Web Page Ranking
+    3. Network Routing
+    4. Recommendation Systems
+    5. Pathfinding Algorithms
+
+
+
+Common Algorithms:-
+
+    1. Dijkstra's Algorithm  : Finds the shortest path between nodes in a graph.
+    2. Kruskal's Algorithm  : Finds the minimum spanning tree for a connected weighted graph.
+    3. Prim's Algorithm  : Finds the minimum spanning tree for a connected weighted graph.
+    4. Floyd-Warshall Algorithm  : Finds shortest paths between all pairs of vertices.
+
+
+
+Graph Representation:-
+
+    There are two common ways to represent a graph:
+
+        1. Adjacency Matrix: In this representation, a 2D matrix is used to show the connections between nodes. The rows and columns of the matrix correspond to the nodes in the 
+           graph, and the value in the matrix cell represents whether there is an edge between the nodes or not. Typically, a 1 indicates an edge, while a 0 indicates no edge.
+
+            Example: Four nodes (A, B, C, D) and five edges (AB, AC, AD, BC, CD):
+
+            A  B  C  D
+            A  0  1  1  1
+            B  1  0  1  0
+            C  1  1  0  1
+            D  1  0  1  0
+            For directed graphs, the matrix may not be symmetric since the edge from node i to node j might be different from the edge from node j to node i.
+
+
+            #include <bits/stdc++.h>
+            using namespace std;
+
+            int main() {
+                int n, m, u, v;
+                cin >> n >> m;
+                int g[n+1][n+1];
+                for(int i = 0; i < m; i++)
+                {    
+                    cin >> u >> v;
+                    g[u][v] = 1;
+                    g[v][u] = 1  // Skip in case of directed graph
+                }
+                return 0;
+            }
+
+
+        2. Adjacency List: In this representation, each node in the graph has a list of its neighboring nodes. It can be implemented using an array or a dictionary where the keys 
+           are the nodes, and the associated values are lists containing the neighboring nodes.
+
+            Example of an undirected graph with four nodes (A, B, C, D) and five edges (AB, AC, AD, BC, CD):
+
+            A: [B, C, D]
+            B: [A, C]
+            C: [A, B, D]
+            D: [A, C]
+
+
+            #include <bits/stdc++.h>
+            using namespace std;
+
+            int main() {
+                int n, m, u, v;
+                cin >> n >> m;
+                vector<int> g[n+1];
+                for(int i = 0; i < m; i++)
+                {    
+                    cin >> u >> v;
+                    g[u].push_back(v);
+                    g[v].push_back(u); // Skip in case of directed graph
+                }
+                return 0;
+            }
+
+
+Traversals :-
+
+        1. Breadth First Search (BFS):
+
+            Algorithm:
+                (i)   Pick a starting node push it into the queue, mark it as visited.
+                (ii)  In every iteration, pop out the 'x' node and put it in the solution vector.
+                (iii) All the unvisited adjacent nodes from 'x' are pushed into the queue.
+                (iv)  Repeat steps 2 and 3.
+
+
+                
+                import java.util.*;
+
+                public class BFS {
+                    public static void main(String[] args) {
+                        Scanner sc = new Scanner(System.in);
+                        int n = sc.nextInt(); // number of nodes
+                        int m = sc.nextInt(); // number of edges
+                        List<List<Integer>> adjList = new ArrayList<>();
+                        for (int i = 0; i <= n; i++) {
+                            adjList.add(new ArrayList<>());
+                        }
+                        for (int i = 0; i < m; i++) {
+                            int u = sc.nextInt();
+                            int v = sc.nextInt();
+                            adjList.get(u).add(v);
+                            adjList.get(v).add(u); // Skip this line for directed graph
+                        }
+                        int startNode = sc.nextInt(); // starting node for BFS
+                        bfs(startNode, adjList, n);
+                    }
+
+                    public static void bfs(int start, List<List<Integer>> adjList, int n) {
+                        boolean[] visited = new boolean[n + 1];
+                        Queue<Integer> queue = new LinkedList<>();
+                        queue.add(start);
+                        visited[start] = true;
+
+                        while (!queue.isEmpty()) {
+                            int node = queue.poll();
+                            System.out.print(node + " ");
+
+                            for (int neighbor : adjList.get(node)) {
+                                if (!visited[neighbor]) {
+                                    queue.add(neighbor);
+                                    visited[neighbor] = true;
+                                }
+                            }
+                        }
+                    }
+                }
+
+        2. Depth First Search (DFS):
+
+            Algorithm:
+                (i)   Start with an initial node as the current node.
+                (ii)  Mark the current node as visited to keep track of the nodes already explored.
+                (iii) Process the current node (e.g., print its value or perform any desired operation).
+                (iv)  Find an unvisited neighboring node of the current node and make it the new current node.
+                (v)   If all neighboring nodes are visited, backtrack to the previous node (pop it from the stack if using an explicit stack).
+                (vi)  Repeat steps 2 to 5 until there are no more unvisited nodes.
+
+
+                import java.util.*;
+
+                public class DFS {
+                    public static void main(String[] args) {
+                        Scanner sc = new Scanner(System.in);
+                        int n = sc.nextInt(); // number of nodes
+                        int m = sc.nextInt(); // number of edges
+                        List<List<Integer>> adjList = new ArrayList<>();
+                        for (int i = 0; i <= n; i++) {
+                            adjList.add(new ArrayList<>());
+                        }
+                        for (int i = 0; i < m; i++) {
+                            int u = sc.nextInt();
+                            int v = sc.nextInt();
+                            adjList.get(u).add(v);
+                            adjList.get(v).add(u); // Skip this line for directed graph
+                        }
+                        int startNode = sc.nextInt(); // starting node for DFS
+                        boolean[] visited = new boolean[n + 1];
+                        dfs(startNode, adjList, visited);
+                    }
+
+                    public static void dfs(int node, List<List<Integer>> adjList, boolean[] visited) {
+                        visited[node] = true;
+                        System.out.print(node + " ");
+
+                        for (int neighbor : adjList.get(node)) {
+                            if (!visited[neighbor]) {
+                                dfs(neighbor, adjList, visited);
+                            }
+                        }
+                    }
+                }
+
+
+Components of a Graph:-
+
+                    1. Strongly Connected Component (SCC): In a directed graph, a strongly connected component is a maximal subgraph where there is a path from any vertex to every other vertex in the subgraph.
+                    2. Weakly Connected Component: In a directed graph, a weakly connected component is a maximal subgraph where replacing all of its directed edges with undirected edges makes the subgraph connected.
+                    3. Connected Component: In an undirected graph, a connected component is a maximal subgraph where there is a path between any pair of vertices in the subgraph.
+
+                    
+                    
+Visited Array:-
+
+    A visited array is used to keep track of the nodes that have already been visited during graph traversal algorithms like BFS and DFS. This helps in avoiding the processing of the same node multiple times, which can lead to infinite loops and incorrect results.
+
+    The visited array is typically a boolean array where each index represents a node in the graph. The value at each index is set to true if the corresponding node has been visited, and false otherwise.
+
+    Example:
+        Suppose we have a graph with 5 nodes. The visited array would be initialized as follows:
+                            
+        boolean[] visited = new boolean[6]; // Index 0 is unused for simplicity
+
+        Initially, all values in the visited array are false:
+        visited = [false, false, false, false, false, false]
+
+        When a node is visited, its corresponding index in the visited array is set to true:
+        visited[1] = true; // Node 1 is visited
+        visited[3] = true; // Node 3 is visited
+
+        The visited array now looks like this:
+        visited = [false, true, false, true, false, false]
+
+        In BFS and DFS algorithms, the visited array is used to check whether a node has been visited before processing it. This ensures that each node is processed only once.
+
+
+
+
+
+
+
+Total Degree of a Graph = 2 X no. of edges 
