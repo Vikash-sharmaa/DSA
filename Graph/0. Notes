@@ -259,3 +259,79 @@ Visited Array:-
 
 
 Total Degree of a Graph = 2 X no. of edges 
+
+
+
+
+
+
+
+
+
+Bipartite Graph:
+
+    A bipartite graph is a graph whose vertices can be divided into two disjoint and independent sets U and V such that every edge connects a vertex in U to one in V. In other words, there is no edge that connects vertices within the same set.
+
+    Properties:
+        1. A graph is bipartite if and only if it does not contain an odd-length cycle.
+        2. Bipartite graphs are 2-colorable, meaning the graph's vertices can be colored using two colors such that no two adjacent vertices share the same color.
+
+    Example:
+        Consider a graph with vertices {1, 2, 3, 4} and edges {(1, 3), (1, 4), (2, 3), (2, 4)}. This graph is bipartite because we can divide the vertices into two sets {1, 2} and {3, 4}.
+
+    Algorithm to check if a graph is bipartite using BFS:
+
+        import java.util.*;
+
+        public class BipartiteGraph {
+            public static void main(String[] args) {
+                Scanner sc = new Scanner(System.in);
+                int n = sc.nextInt(); // number of nodes
+                int m = sc.nextInt(); // number of edges
+                List<List<Integer>> adjList = new ArrayList<>();
+                for (int i = 0; i <= n; i++) {
+                    adjList.add(new ArrayList<>());
+                }
+                for (int i = 0; i < m; i++) {
+                    int u = sc.nextInt();
+                    int v = sc.nextInt();
+                    adjList.get(u).add(v);
+                    adjList.get(v).add(u);
+                }
+                System.out.println(isBipartite(adjList, n) ? "Graph is Bipartite" : "Graph is not Bipartite");
+            }
+
+            public static boolean isBipartite(List<List<Integer>> adjList, int n) {
+                int[] colors = new int[n + 1];
+                Arrays.fill(colors, -1);
+
+                for (int i = 1; i <= n; i++) {
+                    if (colors[i] == -1) {
+                        if (!bfsCheck(adjList, i, colors)) {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            }
+
+            public static boolean bfsCheck(List<List<Integer>> adjList, int start, int[] colors) {
+                Queue<Integer> queue = new LinkedList<>();
+                queue.add(start);
+                colors[start] = 0;
+
+                while (!queue.isEmpty()) {
+                    int node = queue.poll();
+
+                    for (int neighbor : adjList.get(node)) {
+                        if (colors[neighbor] == -1) {
+                            colors[neighbor] = 1 - colors[node];
+                            queue.add(neighbor);
+                        } else if (colors[neighbor] == colors[node]) {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            }
+        }
