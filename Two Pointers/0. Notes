@@ -1,0 +1,26 @@
+# Two Pointers Algorithm
+
+Overview:-
+
+The two pointers technique is a common algorithmic approach used to solve problems involving arrays or lists. 
+It involves using two pointers to iterate through the data structure, often from different ends, to find a solution efficiently.
+
+When to Use:-
+
+- When you need to find pairs in an array that satisfy a certain condition.
+- When you need to reverse a sequence or part of it.
+- When you need to partition an array based on a condition.
+- When you need to find subarrays with certain properties.
+
+Common Problems :-
+
+1. Pair Sum: Finding pairs in a sorted array that sum up to a specific target.
+2. Container With Most Water: Finding the maximum area of water that can be contained.
+3. Remove Duplicates: Removing duplicates from a sorted array in-place.
+4. Palindrome Check: Checking if a string is a palindrome by comparing characters from both ends.
+
+
+
+Example
+* Pair Sum Problem
+    Given a sorted array `arr` and a target sum `target`, find two numbers in the array that add up to `target`.
