@@ -1,0 +1,58 @@
+  *  Array/String + Subarray/Substring + largest/max/min + k (window size)
+    - Window size formula: [end - start + 1]
+
+    Types of Sliding Window:
+    1. Fixed Size
+    2. Variable Size
+
+
+      Fixed Size
+        • window size given - maximize sum.
+        • Once window size is achieved - get an answer. - [ if(size==k) -> candidate for answer]
+        • Window size is maintained
+
+        while(j<size)
+        {
+                Calculations
+                if(windowSize<k) j++;
+                else if(windowSize == k){
+                        Ans <--- from calculations
+                        Calculations - remove I
+                        Window size maintained and slide
+                }
+        }
+
+
+
+        Variable Size:
+            • Sum given - find max/min window[largest window/smallest window - subjected to a condition]
+            • Once condition is achieved - get an answer. - [ if(sum==k) -> candidate for answer]
+            • Window size will vary.
+
+
+            while (j < size) {
+                // Perform necessary calculations
+                if (condition < k) {
+                    j++;
+                } else if (condition == k) {
+                    // Update answer from calculations
+                    // Remove calculation for i
+                    j++;
+                } else if (condition > k) {
+                    while (condition > k) {
+                        // Remove calculation for i
+                        i++;
+                    }
+                }
+            }
+
+            
+
+
+    
+
+
+
+
+	
+		
