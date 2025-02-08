@@ -1,0 +1,196 @@
+    1️⃣ What is Binary Search?
+
+    Binary Search is an efficient search algorithm used to find an element in a sorted array. It works by repeatedly dividing the array into halves and discarding the half where the target cannot be present.
+        • Time Complexity: O(log⁡n)
+        • Space Complexity: O(1) (Iterative) or O(log⁡n) (Recursive due to function call stack)
+
+
+
+    2️⃣ When to Use Binary Search?
+
+        ✔️ The array must be sorted
+        ✔️ The problem requires efficient searching (faster than O(n) linear search)
+        ✔️ Can be applied to search, range queries, finding bounds, and peaks
+
+
+
+
+    3️⃣ Standard Binary Search Algorithm
+
+        public int binarySearch(int[] arr, int target) {
+            int left = 0, right = arr.length - 1;
+            
+            while (left <= right) {
+                int mid = left + (right - left) / 2; // Prevents integer overflow
+                
+                if (arr[mid] == target) return mid; // Found target
+                else if (arr[mid] < target) left = mid + 1; // Search right half
+                else right = mid - 1; // Search left half
+            }
+            
+            return -1; // Target not found
+        }
+
+
+
+
+    4️⃣ Variations of Binary Search
+
+        📌 4.1 Finding First and Last Occurrence
+            If an element appears multiple times, we may need to find:
+                • First occurrence → Move left after finding a match
+                • Last occurrence → Move right after finding a match
+
+                public int firstOccurrence(int[] arr, int target) {
+                    int left = 0, right = arr.length - 1, first = -1;
+                    while (left <= right) {
+                        int mid = left + (right - left) / 2;
+                        if (arr[mid] >= target) {
+                            if (arr[mid] == target) first = mid;
+                            right = mid - 1; // Move left
+                        } else {
+                            left = mid + 1;
+                        }
+                    }
+                    return first;
+                }
+                public int lastOccurrence(int[] arr, int target) {
+                    int left = 0, right = arr.length - 1, last = -1;
+                    while (left <= right) {
+                        int mid = left + (right - left) / 2;
+                        if (arr[mid] <= target) {
+                            if (arr[mid] == target) last = mid;
+                            left = mid + 1; // Move right
+                        } else {
+                            right = mid - 1;
+                        }
+                    }
+                    return last;
+                }
+
+            🔹 Count of occurrences: last - first + 1
+
+
+
+        📌 4.2 Order Agnostic Binary Search
+            If we don’t know whether the array is sorted in ascending or descending, we first check the order and then apply binary search.
+
+                public int orderAgnosticBinarySearch(int[] arr, int target) {
+                    int left = 0, right = arr.length - 1;
+                    boolean isAscending = arr[left] < arr[right];
+                    while (left <= right) {
+                            int mid = left + (right - left) / 2;
+                            if (arr[mid] == target) return mid;
+                    if (isAscending) { // Ascending order
+                                if (arr[mid] < target) left = mid + 1;
+                                else right = mid - 1;
+                            } else { // Descending order
+                                if (arr[mid] > target) left = mid + 1;
+                                else right = mid - 1;
+                            }
+                        }
+                        return -1;
+                }
+
+        📌 4.3 Finding Floor and Ceil of an Element
+            • Floor: Greatest number ≤ target
+            • Ceil: Smallest number ≥ target
+
+                public int floor(int[] arr, int target) {
+                    int left = 0, right = arr.length - 1, floor = -1;
+                    while (left <= right) {
+                        int mid = left + (right - left) / 2;
+                        if (arr[mid] <= target) {
+                            floor = arr[mid]; // Store potential floor
+                            left = mid + 1; // Move right
+                        } else {
+                            right = mid - 1;
+                        }
+                    }
+                    return floor;
+                }
+                public int ceil(int[] arr, int target) {
+                    int left = 0, right = arr.length - 1, ceil = -1;
+                    while (left <= right) {
+                        int mid = left + (right - left) / 2;
+                        if (arr[mid] >= target) {
+                            ceil = arr[mid]; // Store potential ceil
+                            right = mid - 1; // Move left
+                        } else {
+                            left = mid + 1;
+                        }
+                    }
+                    return ceil;
+                }
+
+
+    5️⃣ Special Cases in Binary Search
+
+        📌 5.1 Rotated Sorted Array
+
+            If an array is rotated, we find the rotation index (smallest element) first.
+
+                public int findRotationIndex(int[] arr) {
+                    int left = 0, right = arr.length - 1;
+                    while (left < right) {
+                        int mid = left + (right - left) / 2;
+                        if (arr[mid] > arr[right]) left = mid + 1;
+                        else right = mid;
+                    }
+                    return left; // Index of the smallest element
+                }
+
+            • Clockwise rotations = index of min element
+            • Anti-clockwise rotations = (size - min index)
+
+
+
+        📌 5.2 Searching in a Rotated Sorted Array
+
+            public int searchInRotatedSortedArray(int[] arr, int target) {
+                int rotationIndex = findRotationIndex(arr);
+                int left = 0, right = arr.length - 1;
+                if (target >= arr[rotationIndex] && target <= arr[right])
+                        left = rotationIndex; // Search right half
+                    else
+                        right = rotationIndex - 1; // Search left half
+                while (left <= right) {
+                        int mid = left + (right - left) / 2;
+                        if (arr[mid] == target) return mid;
+                        else if (arr[mid] < target) left = mid + 1;
+                        else right = mid - 1;
+                    }
+                    return -1;
+                }
+
+    6️⃣ Circular Arrays and Binary Search
+
+            In a circular array:
+                • Right neighbor: (i + 1) % n
+                • Left neighbor: (i + n - 1) % n
+            This prevents index out of bounds errors.
+
+
+    7️⃣ Binary Search in 2D Arrays (Matrix)
+        Row-Wise Sorted Matrix
+
+            public boolean searchMatrix(int[][] matrix, int target) {
+                int row = 0, col = matrix[0].length - 1;
+                
+                while (row < matrix.length && col >= 0) {
+                    if (matrix[row][col] == target) return true;
+                    else if (matrix[row][col] > target) col--; // Move left
+                    else row++; // Move down
+                }
+                return false;
+            }
+
+
+
+    • If sorted row-wise & column-wise: Start from top-right corner.
+    • If fully sorted (1D-like matrix): Convert index using mid = (low + high) / 2.
+
+    🔹 Conclusion
+        🔸 Binary Search reduces complexity from O(n) to O(log n)
+        🔸 Works best on sorted or monotonic functions
+        🔸 Can be applied to search, range queries, peaks, rotations, and 2D matrices

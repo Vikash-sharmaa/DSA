@@ -48,6 +48,18 @@
                 }
             }
 
+
+
+
+
+🔹 When to Use HashMap?
+
+Use a HashMap in sliding window problems when:
+
+    You need to track frequencies of elements dynamically (e.g., counting occurrences of characters/numbers).
+    Elements can appear multiple times and you must track how many times they appear.
+    You need quick lookups (O(1) average case) for checking if a certain condition (e.g., uniqueness) is met.
+
             
 
 
