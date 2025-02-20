@@ -1,0 +1,12 @@
+Linked List is a Data Structure which stores elements in the form of nodes where each node contains the data and
+the address to the next node.
+
+Why use a Linked List?
+1. Dynamic Size: Linked lists can easily grow and shrink in size by allocating and deallocating memory as needed.
+2. Efficient Insertions/Deletions: Inserting or deleting elements in a linked list is more efficient compared to arrays, especially when dealing with large datasets.
+3. Memory Utilization: Linked lists do not require contiguous memory allocation, which can be beneficial in systems with fragmented memory.
+
+Where to use a Linked List?
+1. Implementing Stacks and Queues: Linked lists are often used to implement stack and queue data structures.
+2. Graph Adjacency Lists: Linked lists can be used to represent adjacency lists in graph data structures.
+3. Dynamic Memory Allocation: Linked lists are used in dynamic memory allocation schemes, such as in the implementation of memory pools.

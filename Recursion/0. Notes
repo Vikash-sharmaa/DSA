@@ -71,12 +71,14 @@ Tips for Writing Recursive Code
 		○ Modifying the array affects all future calls.
 
 Common Recursive Problems
+
 1️⃣ Counting Digits in a Number
 
 	int countDigits(int n) {
     if (n == 0) return 0;
     return 1 + countDigits(n / 10);
 }
+
 	Formula: Digits in number = (int) Math.log10(n) + 1
 
 2️⃣ Returning a Count from Recursion
