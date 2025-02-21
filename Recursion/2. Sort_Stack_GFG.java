@@ -32,7 +32,7 @@ class Solution {
             int last = stack.pop();
     
             // Recursively sort the remaining stack
-            sortStack(stack); // Corrected recursive call (was `sort(stack)`)
+            sortStack(stack); 
     
             // Insert the removed element back in sorted order
             insert(stack, last);
