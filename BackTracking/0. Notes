@@ -1,0 +1,118 @@
+
+
+
+
+1. Introduction
+
+	• Backtracking is a technique used to solve problems recursively by trying all possible solutions and undoing choices when they lead to failure.
+	• It is a form of controlled recursion where we explore all options but prune paths that won’t lead to a solution.
+	• Recursion is the parent of Dynamic Programming (DP), Backtracking (BT), and Divide & Conquer (DnC).
+	• Combination of choices, decisions, and constraints to explore all valid solutions.
+
+
+
+2. Key Concepts of Backtracking
+
+	1. Choices + Decisions → Choose an option, make a decision, and explore further.
+	2. All Possible Combinations → Used when problems require exploring multiple paths (e.g., permutations, Sudoku).
+	3. Controlled Recursion → If a path is invalid, discard it early to improve efficiency.
+	4. Number of Choices → May vary dynamically, affecting the recursion depth.
+	5. Size of Constraints →
+		○ If 1 < n < 10, backtracking is feasible since complexity is O(2^n), O(n^d), or O(n!).
+		○ If 1 < n < 20 or 30, optimizations are required to avoid excessive computation.
+	6. Avoid Greedy Approach →
+		○ Some problems require trying all possibilities instead of taking the locally best choice.
+		○ Example: Finding the largest number from 5477 with only two swaps:
+			§ Greedy → 7745 (incorrect).
+			§ Backtracking → 7754 (correct).
+		○ When dealing with duplicate values, backtracking is often necessary.
+
+
+
+3. Backtracking vs. Other Techniques
+
+    • Recursion: Explores all possible solutions. The answer is found at the leaf node. It involves choice + decision and 
+            can have exponential time complexity. Used for simple problems.
+    • Backtracking: Explores and undoes choices when needed. The answer is found at the leaf node. It involves combinations + choices + decision. 
+            The time complexity is usually O(2^n), O(n!), or O(n^d). Used for combinatorial & constraint-based problems.
+    • Dynamic Programming (DP): Optimizes solutions using memoization. The answer is found at the root. It involves choices + decision + optimization. 
+            The time complexity is usually O(n^2) or better. Used for optimization problems.
+
+
+
+
+
+
+4. Generalized Backtracking Template
+
+Identification:-
+
+* Combinations / multiple solutions would be asked 
+* Large number of choices would be given.
+* Constraints would be smaller like n<=20
+
+After identifying the ques as backtracking , try to fit the solution in Generalized solution given below.
+
+
+
+    A standard backtracking function follows this pattern:
+
+    void solve(vector<int> &v) {
+        if (isSolved()) {  // Base case: valid solution found
+            printOrSaveSolution();
+            return;
+        }
+    for (choice in choices) {
+            if (isValid(choice)) {
+                applyChoice(v, choice);   // Make the change
+                solve(v);                  // Recurse
+                revertChoice(v, choice);   // Undo the change (Backtrack)
+            }
+        }
+    return;
+    }
+
+    Breakdown of Steps:
+        1. Base Case: Check if the problem is solved (isSolved()). If yes, store or print the solution and return.
+        2. Loop Through Choices: Iterate through all possible choices.
+        3. Check Validity: Before making a move, check if it's valid (isValid()).
+        4. Make a Change: Apply the change and recurse (solve(v)).
+        5. Backtrack (Undo the Change): After recursion, undo the modification to explore other paths.
+
+
+
+
+5. Applications of Backtracking
+
+    1. Combinatorial Problems
+        • Generating permutations of a string/array.
+        • Finding subsets (Power Set).
+        • Generating combinations (e.g., n choose k).
+    2. Constraint-Satisfaction Problems
+        • N-Queens Problem
+        • Sudoku Solver
+        • Word Search in a Grid
+    3. Graph Problems
+        • Hamiltonian Path
+        • Graph Coloring
+        • Maze Solving
+
+
+
+6. Optimizing Backtracking
+    • Pruning → Avoid exploring unnecessary paths using constraints.
+    • Memoization → Store intermediate results to prevent redundant calculations.
+    • Bitmasking → Use bitwise operations for state representation (e.g., N-Queens).
+
+
+
+7. Example: Solving N-Queens using Backtracking
+
+
+
+
+8. Complexity Analysis of Backtracking
+    • Time Complexity:
+        ○ Most problems lie in O(2^n), O(n!), or O(n^d) due to exponential branching.
+    • Space Complexity:
+        ○ O(n) (Recursion stack depth).
