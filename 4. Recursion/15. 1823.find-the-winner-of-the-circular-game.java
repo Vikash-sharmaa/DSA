@@ -1,5 +1,6 @@
-package Recursion;
+
 /*
+    Asked to me in UKG -  every person kills the next one 
  * @lc app=leetcode id=1823 lang=java
  *
  * 

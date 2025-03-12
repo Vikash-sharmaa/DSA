@@ -65,30 +65,30 @@ class Solution {
     
     
 
-    void combinationSum(int[] candidates, int target, int start, List<Integer> currentCombination, List<List<Integer>> res) {
-        // Base case: If target becomes 0, we found a valid combination
-        if (target == 0) {
-            res.add(new ArrayList<>(currentCombination)); // Store a copy of the valid combination
-            return;
-        }
+    // void combinationSum(int[] candidates, int target, int start, List<Integer> currentCombination, List<List<Integer>> res) {
+    //     // Base case: If target becomes 0, we found a valid combination
+    //     if (target == 0) {
+    //         res.add(new ArrayList<>(currentCombination)); // Store a copy of the valid combination
+    //         return;
+    //     }
     
-        // Base case: If we have processed all elements, return
-        if (start == candidates.length) return;
+    //     // Base case: If we have processed all elements, return
+    //     if (start == candidates.length) return;
     
-        // Iterate over the candidates starting from the current index
-        for (int i = start; i < candidates.length; i++) {
-            // Skip duplicate elements to ensure unique combinations (only for sorted arrays)
-            if (i > start && candidates[i] == candidates[i - 1]) continue;
+    //     // Iterate over the candidates starting from the current index
+    //     for (int i = start; i < candidates.length; i++) {
+    //         // Skip duplicate elements to ensure unique combinations (only for sorted arrays)
+    //         if (i > start && candidates[i] == candidates[i - 1]) continue;
     
-            // Check if the current candidate can be part of the combination
-            if (candidates[i] <= target) {
-                currentCombination.add(candidates[i]); // Choose the current candidate
-                // Recur with reduced target, moving to the next index to avoid duplicate usage
-                combinationSum(candidates, target - candidates[i], i + 1, currentCombination, res);
-                currentCombination.remove(currentCombination.size() - 1); // Backtrack to explore other combinations
-            }
-        }
-    }
+    //         // Check if the current candidate can be part of the combination
+    //         if (candidates[i] <= target) {
+    //             currentCombination.add(candidates[i]); // Choose the current candidate
+    //             // Recur with reduced target, moving to the next index to avoid duplicate usage
+    //             combinationSum(candidates, target - candidates[i], i + 1, currentCombination, res);
+    //             currentCombination.remove(currentCombination.size() - 1); // Backtrack to explore other combinations
+    //         }
+    //     }
+    // }
     
     
     public List<List<Integer>> combinationSum2(int[] candidates, int target) {

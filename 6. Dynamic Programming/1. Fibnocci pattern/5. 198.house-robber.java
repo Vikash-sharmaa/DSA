@@ -1,10 +1,16 @@
-/*
+/* https://leetcode.com/problems/house-robber/description/
+
  * @lc app=leetcode id=198 lang=java
  *
  * [198] House Robber
  */
 
 // @lc code=start
+
+
+
+// dp[i] - amount we can rob till ith house 
+
 class Solution {
 
     // n is the index of last house
@@ -15,7 +21,7 @@ class Solution {
         if (n == 1) return Math.max(nums[0], nums[1]); // Base case: Two houses, return the max value of the two.
     
         // Option 1: Rob this house (add the current house value to the result of robbing houses up to n-2).
-        int robThisHouse = nums[n] + robRecursive(n - 2, nums);
+        int robThisHouse = nums[n] + robRecursive(n - 2, nums); // just add and think robRecursive(n - 2, nums) will be given by recursion - dont think how
     
         // Option 2: Don't rob this house (result is the maximum amount from robbing houses up to n-1).
         int dontRobThisHouse = 0 + robRecursive(n - 1, nums);

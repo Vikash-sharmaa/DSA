@@ -1,0 +1,154 @@
+Notes:-
+-------
+
+1. rownum only works with <=
+2. 
+
+
+
+Most asked SQL queries-
+------------------------
+
+
+/***************************************************************************************************************************/
+
+    1. Find the second highest salary of an employee.
+
+        select max(sal) from employee 
+            where sal not in (select max(sal) from employee)                              // < could also be used
+
+/******************************************************************************************************************************/
+
+    2. Display the highest paid employee in each department.
+
+        select dep_id, max(sal) from employee                                           // cant use any other column apart 
+            group by dep_id;                                                            // from the one with which groupinby
+
+
+    Note:- Similarly min() can be used 
+
+
+/******************************************************************************************************************************/
+
+    3. Count number of employees in each department.
+
+        select dep_id, count(*) from employee
+            group by dep_id;
+
+/******************************************************************************************************************************/
+
+    4. Display alternate records in sql.
+
+
+        => Display Even records
+
+            select * from (select emp_id,emp_name,sal,rownum as rn from employee order by rn)   // not taking rn outside as 
+                where mod(rn,2)=0;                                                              // as rows not ordered 
+                                                                                                // and before processing
+                                                                                                // we need to first sort them.
+
+        => Display Odd records
+
+            selct * from (select emp_id,emp_name,sal,rownum as rn from employee order by rn)
+                where mod(rn,2)<>0;
+
+
+   Note:- rownum - psudo columns assigned from 1 till the number of records. - readonly - insert/update - cant be performed.
+   Note:- In oracle records are displayed and dont follow any order , not even order by rownum.
+
+/******************************************************************************************************************************/
+
+    5. Display duplicate of a column and its frequency.[rows having duplicate values]
+
+        select emp_name , count(*) from employee
+            group by emp_name
+            having count(*)>1;
+
+
+/******************************************************************************************************************************/
+
+    6. Display freq of occurence of each names 
+
+        select emp_name , count(*) from employee
+            group by emp_name
+            order by count(*);
+
+/******************************************************************************************************************************/
+
+    7.Display the employee names whose name start with M'
+
+        select emp_name from employee
+            where emp_name like 'M%';
+
+/******************************************************************************************************************************/
+
+    8. Display the employee names whose name ends with 'M'
+
+        select emp_name from employee
+            where emp_name like '%M';
+
+/******************************************************************************************************************************/
+
+    9. Display the names of all employees having 'M' in any position in their name
+
+        select emp_name from employee
+            where emp_name like '%M%';
+
+/******************************************************************************************************************************/
+
+    10. Display the names of all employees whose name does not contain 'M' anyehere.
+
+        select emp_name from employee
+            where emp_name not like '%M%';
+
+/******************************************************************************************************************************/
+
+    11. Display names of all employees whose name contains exactly 4 Letters
+
+        select emp_name from employee
+            where emp_name like '____';
+
+/******************************************************************************************************************************/
+
+    12. Display the names of employees whose name contains the (i)second letter as 'L'(ii)fourth Letter as "M'
+
+        select emp_name from employee
+            where emp_name like '_L%';
+
+        select emp_name from employee
+            where emp_name like '___M%';
+
+/******************************************************************************************************************************/
+
+    13.Display the employee names and hire dates for the employees joined in the month of December
+
+        select emp_name, hire_date from employee
+            where hire_date like '%DEC%';
+
+/******************************************************************************************************************************/
+
+    14. Display the names of employees whose name contains exactly 2 'L's
+
+        select emp_name from employee
+            where emp_name like '%LL%';
+
+/******************************************************************************************************************************/
+
+    15. Display the names of employees whose name starts with 'J' and ends with 'S'.
+
+        select emp_name from employee
+            where emp_name like 'J%S';
+
+/******************************************************************************************************************************/
+
+
+
+
+
+
+
+
+
+
+
+

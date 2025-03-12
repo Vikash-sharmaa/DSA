@@ -112,3 +112,16 @@ Common Recursive Problems
 }
              
             Different lists are created at each recursive call.
+
+
+
+
+
+Mool Mantra :-
+
+For Base Conditions :-
+	1. Think of the answer for the smallest input.
+	2. Keep in mind that , at any point of time of execution, the array does not go Out of bound.
+
+
+Keep one think in mind - I will do for the curent one - others - rec will give me the answer , dont think how.

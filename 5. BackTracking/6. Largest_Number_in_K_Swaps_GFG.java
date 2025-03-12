@@ -12,9 +12,9 @@
 
  /*
     Not greedy b'coz -
-        num = 2736, k = 1
-        Greedy choice: Swap '7' and '2' → 7236  
-        Better choice: Swap '3' and '6' → 7632 ✅ (Correct)
+        num = 4577, k = 2
+        Greedy choice: 7745
+        Better choice: 7754
   */
 
 

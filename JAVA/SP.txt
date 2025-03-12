@@ -1,0 +1,528 @@
+-- A stored procedure is a subroutine available to applications that access a relational database system.
+-- It is stored in the database and can be repeatedly executed.
+
+-- Basic Syntax for creating a stored procedure:
+
+    CREATE OR REPLACE PROCEDURE procedure_name 
+    AS
+    BEGIN
+        -- Procedure body
+    END;
+/
+
+-- Example of a simple stored procedure:
+
+    CREATE OR REPLACE PROCEDURE greet_user 
+    AS
+    BEGIN
+        DBMS_OUTPUT.PUT_LINE('Hello, User!');
+    END;
+/
+
+-- To execute the stored procedure:
+
+    BEGIN
+        greet_user;
+    END;
+/
+
+/********************************************************************************************************************************************************************************************************************/
+
+-- Stored procedures can also accept parameters:
+
+    CREATE OR REPLACE PROCEDURE greet_user(p_name IN VARCHAR2) 
+    AS
+    BEGIN
+        DBMS_OUTPUT.PUT_LINE('Hello, ' || p_name || '!');
+    END;
+/
+
+-- Example of executing the stored procedure with a parameter:
+    BEGIN
+        greet_user('Vikash');
+    END;
+/
+
+-- Stored procedures can have IN, OUT, and IN OUT parameters:
+    CREATE OR REPLACE PROCEDURE calculate_sum(p_num1 IN NUMBER, p_num2 IN NUMBER, p_result OUT NUMBER) 
+    AS
+    BEGIN
+        p_result := p_num1 + p_num2;
+    END;
+/
+
+-- Example of executing the stored procedure with IN and OUT parameters:
+
+    DECLARE
+        v_result NUMBER;
+    BEGIN
+        calculate_sum(10, 20, v_result);
+        DBMS_OUTPUT.PUT_LINE('The sum is: ' || v_result);
+    END;
+/
+
+/********************************************************************************************************************************************************************************************************************/
+
+-- Error handling in stored procedures using EXCEPTION block:
+
+    CREATE OR REPLACE PROCEDURE divide_numbers(p_num1 IN NUMBER, p_num2 IN NUMBER, p_result OUT NUMBER) 
+    AS
+    BEGIN
+        p_result := p_num1 / p_num2;
+    EXCEPTION
+        WHEN ZERO_DIVIDE THEN
+            DBMS_OUTPUT.PUT_LINE('Error: Division by zero');
+            p_result := NULL;
+    END;
+/
+
+-- Example of executing the stored procedure with error handling:
+
+    DECLARE
+        v_result NUMBER;
+    BEGIN
+        divide_numbers(10, 0, v_result);
+        IF v_result IS NULL THEN
+            DBMS_OUTPUT.PUT_LINE('Division failed.');
+        ELSE
+            DBMS_OUTPUT.PUT_LINE('The result is: ' || v_result);
+        END IF;
+    END;
+/
+
+/********************************************************************************************************************************************************************************************************************/
+
+NVL(expr1, expr2) is a built-in Oracle SQL function that replaces NULL values with a default
+
+SELECT NVL(salary, 0) AS updated_salary 
+FROM employees;
+
+
+/********************************************************************************************************************************************************************************************************************/
+
+
+When designing a stored procedure in Oracle, you have two options for returning data:
+1️⃣ Using individual OUT parameters (variables)
+2️⃣ Using a SYS_REFCURSOR (cursor)
+
+Let’s compare both and understand why a cursor is better when returning multiple rows.
+
+
+/********************************************************************************************************************************************************************************************************************/
+
+
+
+
+
+
+
+
+Question:
+    Write an Oracle stored procedure named employee that:
+
+    Takes emp_id (INTEGER) and session_date (DATE) as input parameters (IN).
+    If the employee exists in emp_master, check if a session exists in session_record.
+    If a session exists, return session details using OUT parameters.
+    If no session exists, insert a new session and return the newly created session details.
+
+
+
+
+CREATE OR REPLACE PROCEDURE employee(
+    emp_id IN NUMBER, 
+    session_date IN DATE,
+    session_id_out OUT NUMBER,
+    session_date_out OUT DATE,
+    ttl_out OUT NUMBER
+) 
+AS 
+    session_count NUMBER;
+BEGIN 
+    -- Check if the employee exists
+    IF EXISTS (SELECT 1 FROM emp_master WHERE emp_id = employee.emp_id) THEN
+        
+        -- Check if a session already exists for the employee
+        SELECT COUNT(*) INTO session_count FROM session_record WHERE emp_id = employee.emp_id;
+
+        IF session_count > 0 THEN
+            -- Retrieve session details if session exists
+            SELECT session_id, session_date, ttl 
+            INTO session_id_out, session_date_out, ttl_out
+            FROM session_record 
+            WHERE emp_id = employee.emp_id
+            FETCH FIRST 1 ROWS ONLY; -- In case of multiple sessions, pick the latest one
+
+        ELSE
+            -- Insert a new session if none exists
+            INSERT INTO session_record(emp_id, session_date, ttl) 
+            VALUES (employee.emp_id, SYSDATE, 120)
+            RETURNING session_id, session_date, ttl INTO session_id_out, session_date_out, ttl_out;
+
+            COMMIT;
+        END IF;
+
+    ELSE
+        -- Set OUT parameters to NULL if employee does not exist
+        session_id_out := NULL;
+        session_date_out := NULL;
+        ttl_out := NULL;
+    END IF;
+END employee;
+
+/
+
+/********************************************************************************************************************************************************************************************************************/
+        // Connecting SP with Spring Boot
+
+
+Step 1: Define the Entity Class
+
+Create an entity class for the session_record table. This is needed to map the output of the stored procedure.
+
+        import jakarta.persistence.*;
+        import java.util.Date;
+
+        @Entity
+        @Table(name = "session_record")
+        public class SessionRecord {
+
+            @Id
+            @GeneratedValue(strategy = GenerationType.IDENTITY)
+            private Long sessionId;
+
+            private Long empId;
+
+            @Temporal(TemporalType.TIMESTAMP)
+            private Date sessionDate;
+
+            private Integer ttl;
+
+            // Getters and Setters
+            public Long getSessionId() { return sessionId; }
+            public void setSessionId(Long sessionId) { this.sessionId = sessionId; }
+
+            public Long getEmpId() { return empId; }
+            public void setEmpId(Long empId) { this.empId = empId; }
+
+            public Date getSessionDate() { return sessionDate; }
+            public void setSessionDate(Date sessionDate) { this.sessionDate = sessionDate; }
+
+            public Integer getTtl() { return ttl; }
+            public void setTtl(Integer ttl) { this.ttl = ttl; }
+        }
+
+
+
+📌 Step 2: Define the JPA Repository
+
+Use @Procedure or @Query annotation in the repository interface.
+
+        import org.springframework.data.jpa.repository.JpaRepository;
+        import org.springframework.data.jpa.repository.query.Procedure;
+        import org.springframework.data.repository.query.Param;
+
+        import java.util.Date;
+
+        public interface SessionRecordRepository extends JpaRepository<SessionRecord, Long> {
+
+            @Procedure(name = "employee")
+            void callEmployeeProcedure(
+                @Param("emp_id") Long empId,
+                @Param("session_date") Date sessionDate,
+                @Param("session_id_out") Long[] sessionIdOut,
+                @Param("session_date_out") Date[] sessionDateOut,
+                @Param("ttl_out") Integer[] ttlOut
+            );
+        }
+
+
+
+📌 Step 3: Define the Service Class
+
+Create a service to call the stored procedure.
+
+        import org.springframework.beans.factory.annotation.Autowired;
+        import org.springframework.stereotype.Service;
+        import java.util.Date;
+
+        @Service
+        public class EmployeeService {
+
+            @Autowired
+            private SessionRecordRepository sessionRecordRepository;
+
+            public void executeEmployeeProcedure(Long empId) {
+                Long[] sessionIdOut = new Long[1];
+                Date[] sessionDateOut = new Date[1];
+                Integer[] ttlOut = new Integer[1];
+
+                sessionRecordRepository.callEmployeeProcedure(empId, new Date(), sessionIdOut, sessionDateOut, ttlOut);
+
+                // Print the returned session details
+                System.out.println("Session ID: " + sessionIdOut[0]);
+                System.out.println("Session Date: " + sessionDateOut[0]);
+                System.out.println("TTL: " + ttlOut[0]);
+            }
+        }
+
+
+
+📌 Step 4: Create a REST Controller
+
+Expose an endpoint to trigger the stored procedure.
+
+        import org.springframework.beans.factory.annotation.Autowired;
+        import org.springframework.web.bind.annotation.*;
+
+        @RestController
+        @RequestMapping("/employee")
+        public class EmployeeController {
+
+            @Autowired
+            private EmployeeService employeeService;
+
+            @PostMapping("/execute/{empId}")
+            public String executeStoredProcedure(@PathVariable Long empId) {
+                employeeService.executeEmployeeProcedure(empId);
+                return "Stored Procedure Executed for Employee ID: " + empId;
+            }
+        }
+
+
+
+
+
+
+/********************************************************************************************************************************************************************************************************************/
+
+
+        // Incase of having results as a join of multiple tables 
+
+        ✅ Step 1: Modify Oracle stored procedure to return a SYS_REFCURSOR.
+        ✅ Step 2: Create EmployeeSessionDTO to map multiple table columns.
+        ✅ Step 3: Define EmployeeSessionRepository using @Query.
+        ✅ Step 4: Implement EmployeeService to process the result set.
+        ✅ Step 5: Create EmployeeController to expose REST API.
+
+
+
+📌 Step 1: Modify the Stored Procedure in Oracle
+
+Assuming the procedure joins session_record, emp_master, and department tables and returns multiple columns.
+
+        CREATE OR REPLACE PROCEDURE employee_details(
+            emp_id IN NUMBER,
+            result_cursor OUT SYS_REFCURSOR
+        ) 
+        AS 
+        BEGIN 
+            OPEN result_cursor FOR
+            SELECT e.emp_id, e.emp_name, s.session_id, s.session_date, s.ttl, d.dept_name
+            FROM emp_master e
+            JOIN session_record s ON e.emp_id = s.emp_id
+            JOIN department d ON e.dept_id = d.dept_id
+            WHERE e.emp_id = emp_id;
+        END employee_details;
+        /
+        This procedure returns a cursor (SYS_REFCURSOR) with data from multiple tables.
+
+
+📌 Step 2: Create a DTO (Data Transfer Object)
+
+    Since the result is a custom query with multiple table fields, create a DTO class.
+
+    public class EmployeeSessionDTO {
+        private Long empId;
+        private String empName;
+        private Long sessionId;
+        private Date sessionDate;
+        private Integer ttl;
+        private String deptName;
+
+    }
+
+
+
+📌 Step 3: Define the Repository
+
+Since the procedure returns a cursor, use native query with @Query(value, nativeQuery = true).
+
+        import org.springframework.data.jpa.repository.Query;
+        import org.springframework.data.repository.CrudRepository;
+        import org.springframework.data.repository.query.Param;
+        import java.util.List;
+
+        public interface EmployeeSessionRepository extends CrudRepository<SessionRecord, Long> {
+
+            @Query(value = "CALL employee_details(:empId)", nativeQuery = true)
+            List<Object[]> callEmployeeDetails(@Param("empId") Long empId);
+        }
+        🔹 The result is returned as List<Object[]> since it consists of multiple table columns.
+
+
+
+📌 Step 4: Implement the Service
+
+Convert the raw Object[] result to a DTO list.
+
+
+        import org.springframework.beans.factory.annotation.Autowired;
+        import org.springframework.stereotype.Service;
+        import java.util.ArrayList;
+        import java.util.Date;
+        import java.util.List;
+
+        @Service
+        public class EmployeeService {
+
+            @Autowired
+            private EmployeeSessionRepository employeeSessionRepository;
+
+            public List<EmployeeSessionDTO> getEmployeeSessionDetails(Long empId) {
+                List<Object[]> rawResults = employeeSessionRepository.callEmployeeDetails(empId);
+                List<EmployeeSessionDTO> employeeSessionList = new ArrayList<>();
+
+                for (Object[] row : rawResults) {
+                    EmployeeSessionDTO dto = new EmployeeSessionDTO(
+                        ((Number) row[0]).longValue(),  // empId
+                        (String) row[1],                // empName
+                        ((Number) row[2]).longValue(),  // sessionId
+                        (Date) row[3],                  // sessionDate
+                        ((Number) row[4]).intValue(),   // ttl
+                        (String) row[5]                 // deptName
+                    );
+                    employeeSessionList.add(dto);
+                }
+                return employeeSessionList;
+            }
+        }
+
+
+
+📌 Step 5: Create a REST Controller
+
+Expose an API to fetch the joined data.
+
+        import org.springframework.beans.factory.annotation.Autowired;
+        import org.springframework.web.bind.annotation.*;
+
+        import java.util.List;
+
+        @RestController
+        @RequestMapping("/employee")
+        public class EmployeeController {
+
+            @Autowired
+            private EmployeeService employeeService;
+
+            @GetMapping("/details/{empId}")
+            public List<EmployeeSessionDTO> getEmployeeDetails(@PathVariable Long empId) {
+                return employeeService.getEmployeeSessionDetails(empId);
+            }
+        }
+
+
+
+
+/********************************************************************************************************************************************************************************************************************/
+
+=> Trigger:-
+
+    Triggers in Oracle fire automatically when a specified event occurs on a table or view. They can be classified based on:
+    1️⃣ DML Triggers → Fire on INSERT, UPDATE, DELETE
+    2️⃣ DDL Triggers → Fire on CREATE, ALTER, DROP
+    3️⃣ System/Event Triggers → Fire on database/system events
+
+    📌 1️⃣ DML Triggers (Row-Level & Statement-Level)
+
+        These triggers fire before or after INSERT, UPDATE, or DELETE on a table.
+
+            Type	        When it Fires
+
+            BEFORE INSERT	Before a row is inserted
+            AFTER INSERT	After a row is inserted
+            BEFORE UPDATE	Before a row is updated
+            AFTER UPDATE	After a row is updated
+            BEFORE DELETE	Before a row is deleted
+            AFTER DELETE	After a row is deleted
+
+
+    📌 2️⃣ DDL Triggers (Schema-Level)
+
+        These triggers fire when schema objects like tables, indexes, or views are modified.
+
+            Type	        When it Fires
+            
+            BEFORE CREATE	Before an object is created
+            AFTER CREATE	After an object is created
+            BEFORE ALTER	Before an object is altered
+            AFTER ALTER	    After an object is altered
+            BEFORE DROP	    Before an object is dropped
+            AFTER DROP	    After an object is dropped
+
+
+    Ex.
+        Fires before an UPDATE happens on salary.
+        Stores the old and new salary values in EMPLOYEE_AUDIT.
+        Captures the user who made the change.
+
+
+                CREATE OR REPLACE TRIGGER trg_salary_audit
+                BEFORE UPDATE OF salary ON EMPLOYEES
+                FOR EACH ROW
+                BEGIN
+                    INSERT INTO EMPLOYEE_AUDIT (emp_id, old_salary, new_salary, changed_by)
+                    VALUES (:OLD.emp_id, :OLD.salary, :NEW.salary, USER);
+                END;
+
+    Ex.
+        Fires before deletion on TRANSACTIONS.
+        Stores deleted data in AUDIT_TRANSACTIONS.
+
+
+                CREATE OR REPLACE TRIGGER trg_audit_transaction_delete
+                BEFORE DELETE ON TRANSACTIONS
+                FOR EACH ROW
+                BEGIN
+                    INSERT INTO AUDIT_TRANSACTIONS (txn_id, user_id, amount, txn_date)
+                    VALUES (:OLD.txn_id, :OLD.user_id, :OLD.amount, :OLD.txn_date);
+                END;
+
+/********************************************************************************************************************************************************************************************************************/
+
+    // indexes
+
+    📌 Step 2: Create Indexes on Different Columns
+
+        1️⃣ Single-Column Index (For Faster Lookups)
+            Create an index on customer_id to speed up queries searching by customer.
+
+                CREATE INDEX idx_orders_customer 
+                ON ORDERS (customer_id);
+
+
+        2️⃣ Composite Index (Multi-Column Index)
+            A composite index on order_date and status improves queries filtering by date and status.
+
+            CREATE INDEX idx_orders_date_status 
+            ON ORDERS (order_date, status);
+
+            🔹 Use Case: SELECT * FROM ORDERS WHERE order_date >= SYSDATE - 30 AND status = 'Completed';
+
+
+        3️⃣ Unique Index
+            Ensure customer_id and order_date combination is unique.
+
+            CREATE UNIQUE INDEX idx_unique_customer_date 
+            ON ORDERS (customer_id, order_date);
+
+
+        4️⃣ Function-Based Index (Index on Expression)
+            Indexing on UPPER(status) improves case-insensitive searches.
+
+            CREATE INDEX idx_orders_upper_status 
+            ON ORDERS (UPPER(status));
+
+            🔹 Use Case: SELECT * FROM ORDERS WHERE UPPER(status) = 'SHIPPED';
+
+

@@ -1,4 +1,8 @@
-/*
+/* https://leetcode.com/problems/min-cost-climbing-stairs/description/
+
+
+
+
  * The problem follows the Fibonacci-based pattern:
  * Each state depends on the results of two previous states.
  * Base cases ensure no invalid calls are made.
@@ -17,7 +21,7 @@
 class Solution {
     int minCostClimbingStairsRecursive(int n,int[] cost){
         if(n<0) return 0;
-        if(n==0 || n==1) return cost[n];
+        if(n==0 || n==1) return cost[n]; // if n==1 - we are not going to n==0  as when we step at n==0 , we will have to pay fr it , it will increase the cost
         
         int oneStep = minCostClimbingStairsRecursive(n-1,cost);
         int twoStep = minCostClimbingStairsRecursive(n-2,cost);

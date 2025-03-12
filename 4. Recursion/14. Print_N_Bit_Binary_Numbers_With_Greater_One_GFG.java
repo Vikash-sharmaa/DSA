@@ -14,7 +14,6 @@
             So, the output is "11, 10".
  */
 
-package Recursion;
 
 import java.util.ArrayList;
 

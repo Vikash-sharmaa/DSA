@@ -1,0 +1,188 @@
+joins
+
+/**********************************************************************************************************/
+
+A JOIN in SQL is used to combine data from two or more tables based on a related column.
+
+        Let’s consider two tables:
+
+
+        📌 Table 1: EMPLOYEES
+      --------------------------------
+        emp_id	emp_name	dept_id
+      --------------------------------
+            1	Alice	    101
+            2	Bob	        102
+            3	Charlie	    103
+            4	David	    NULL
+      --------------------------------
+
+
+        📌 Table 2: DEPARTMENTS
+      --------------------------------
+            dept_id	    dept_name
+      --------------------------------
+            101	        HR
+            102	        IT
+            104	        Finance
+      --------------------------------
+
+/**********************************************************************************************************/
+
+📌 1️⃣️ INNER JOIN (Matching Records Only)
+    🔹 Returns only matching records from both tables.
+
+        SELECT e.emp_id, e.emp_name, d.dept_name
+        FROM EMPLOYEES e
+        INNER JOIN DEPARTMENTS d ON e.dept_id = d.dept_id;
+
+    ✅ Result:
+
+    --------------------------------
+    emp_id	emp_name	dept_name
+    --------------------------------
+        1	Alice	    HR
+        2	Bob	        IT
+    --------------------------------
+
+
+    🔹 Explanation:
+        • Charlie (dept_id 103) and David (NULL dept_id) are excluded since they have no matching department.
+        • Finance (dept_id 104) is also excluded because no employee belongs to it.
+
+/**********************************************************************************************************/
+
+📌 2️⃣️ LEFT JOIN (All from Left, Matching from Right)
+    🔹 Returns all employees and the matching department (if any).
+
+        SELECT e.emp_id, e.emp_name, d.dept_name
+        FROM EMPLOYEES e
+        LEFT JOIN DEPARTMENTS d ON e.dept_id = d.dept_id;
+
+    ✅ Result:
+
+   --------------------------------
+    emp_id	emp_name	dept_name
+   --------------------------------
+        1	Alice	    HR
+        2	Bob	        IT
+        3	Charlie	    NULL
+        4	David	    NULL
+   --------------------------------
+
+
+🔹 Explanation:
+	• All employees are included.
+	• If an employee has no matching department, NULL is returned for dept_name.
+
+/**********************************************************************************************************/
+
+📌 3️⃣️RIGHT JOIN (All from Right, Matching from Left)
+    🔹 Returns all departments, and the matching employees (if any).
+
+        SELECT e.emp_id, e.emp_name, d.dept_name
+        FROM EMPLOYEES e
+        RIGHT JOIN DEPARTMENTS d ON e.dept_id = d.dept_id;
+
+
+    ✅ Result:
+
+   ------------------------------------
+    emp_id	    emp_name	dept_name
+   ------------------------------------
+        1	    Alice	    HR
+        2	    Bob	        IT
+        NULL	NULL	    Finance
+   ------------------------------------
+
+🔹 Explanation:
+	• All departments are included.
+	• If a department has no employees, NULL is returned for emp_id and emp_name.
+
+/**********************************************************************************************************/
+
+📌 4️⃣️FULL OUTER JOIN (All from Both Sides)
+    🔹 Returns all employees and all departments, where there’s no match NULL is returned.
+
+        SELECT e.emp_id, e.emp_name, d.dept_name
+        FROM EMPLOYEES e
+        FULL OUTER JOIN DEPARTMENTS d ON e.dept_id = d.dept_id;
+
+
+    ✅ Result:
+
+   ------------------------------------
+    emp_id	    emp_name	dept_name
+   ------------------------------------
+        1	    Alice	    HR
+        2	    Bob	        IT
+        3	    Charlie	    NULL
+        4	    David	    NULL
+        NULL	NULL	    Finance
+   ------------------------------------
+
+🔹 Explanation:
+	• All employees and all departments are included.
+	• Charlie & David have NULL dept_name (no department).
+	• Finance has NULL emp_id and emp_name (no employees).
+
+/**********************************************************************************************************/
+
+📌 5️⃣ CROSS JOIN (Cartesian Product)
+    🔹 Combines every row from EMPLOYEES with every row from DEPARTMENTS.
+
+        SELECT e.emp_id, e.emp_name, d.dept_name
+        FROM EMPLOYEES e
+        CROSS JOIN DEPARTMENTS d;
+
+
+    ✅ Result: (4 employees × 3 departments = 12 rows)
+
+  ------------------------------------
+    emp_id	emp_name	dept_name
+  ------------------------------------
+        1	Alice	    HR
+        1	Alice	    IT
+        1	Alice	    Finance
+        2	Bob	        HR
+        2	Bob	        IT
+        2	Bob	        Finance
+        3	Charlie	    HR
+        3	Charlie	    IT
+        3	Charlie	    Finance
+        4	David	    HR
+        4	David	    IT
+        4	David	    Finance
+  ------------------------------------
+
+
+    🔹 Explanation:
+        • Every employee is combined with every department.
+        • No join condition is used.
+
+/**********************************************************************************************************/
+
+📌 6️⃣️SELF JOIN (Joining a Table to Itself)
+    🔹 Find employees who work in the same department as another employee.
+
+        SELECT e1.emp_name AS Employee, e2.emp_name AS Colleague, e1.dept_id
+        FROM EMPLOYEES e1
+        JOIN EMPLOYEES e2 ON e1.dept_id = e2.dept_id
+        WHERE e1.emp_id <> e2.emp_id;
+
+    ✅ Result:
+
+   ------------------------------------
+    Employee	Colleague	dept_id
+   ------------------------------------
+
+    Alice	    Bob	        101
+    Bob	        Alice	    101
+   ------------------------------------
+
+
+    🔹 Explanation:
+        • The table is joined to itself to compare employees in the same department.
+
+            The WHERE e1.emp_id <> e2.emp_id ensures an employee is not matched to themselves.
+/**********************************************************************************************************/

@@ -1,0 +1,179 @@
+Dynamic Programming (DP) Notes
+
+
+1. Introduction to Dynamic Programming
+
+
+    Dynamic Programming (DP) is a technique used to solve optimization problems by breaking them down into simpler subproblems and solving each subproblem only once, 
+        storing the results for future use. It is particularly useful for problems with overlapping subproblems and optimal substructure.
+
+    Key Properties of DP Problems:
+        1. Overlapping Subproblems: The problem can be broken down into smaller subproblems that are solved multiple times.
+        2. Optimal Substructure: The solution to a larger problem can be built from the optimal solutions of its subproblems.
+
+
+2. Approaches to Dynamic Programming
+
+    There are two main approaches to solving DP problems:
+
+    2.1 Memoization (Top-Down Approach)
+        • Recursively break down the problem.
+        • Store the results of computed subproblems in a data structure (array, hashmap, etc.).
+        • Avoid recomputation by returning stored results.
+        • Suitable when recursion naturally models the problem.
+
+    Example:
+
+        public class FibonacciMemoization {
+            private static Map<Integer, Integer> memo = new HashMap<>();
+            
+            public static int fib(int n) {
+                if (n <= 1) return n;
+                if (memo.containsKey(n)) return memo.get(n);
+                
+                int result = fib(n - 1) + fib(n - 2);
+                memo.put(n, result);
+                return result;
+            }
+            
+            public static void main(String[] args) {
+                System.out.println(fib(10)); // Output: 55
+            }
+        }
+
+
+    2.2 Tabulation (Bottom-Up Approach)
+        • Solve smaller subproblems first and use their results to build the solution to larger problems.
+        • Typically implemented using an iterative approach.
+        • Uses an array to store solutions and avoids recursion overhead.
+        Example:
+            public class FibonacciTabulation {
+                public static int fib(int n) {
+                    if (n <= 1) return n;
+                    int[] dp = new int[n + 1];
+                    dp[0] = 0;
+                    dp[1] = 1;
+                    for (int i = 2; i <= n; i++) {
+                        dp[i] = dp[i - 1] + dp[i - 2];
+                    }
+                    return dp[n];
+                }
+                
+                public static void main(String[] args) {
+                    System.out.println(fib(10)); // Output: 55
+                }
+            }
+
+
+3. Types of DP Problems
+
+    3.1 1D DP Problems
+
+    These involve a single dimension, such as Fibonacci sequence, Climbing Stairs, House Robber, and Coin Change.
+        Example: Climbing Stairs
+            public class ClimbingStairs {
+                public static int climbStairs(int n) {
+                    if (n <= 2) return n;
+                    int[] dp = new int[n + 1];
+                    dp[1] = 1;
+                    dp[2] = 2;
+                    for (int i = 3; i <= n; i++) {
+                        dp[i] = dp[i - 1] + dp[i - 2];
+                    }
+                    return dp[n];
+                }
+            }
+
+    3.2 2D DP Problems
+
+    These problems require two dimensions, such as Longest Common Subsequence (LCS), Longest Common Substring, Edit Distance, and Knapsack.
+        Example: Longest Common Subsequence
+            public class LCS {
+                public static int longestCommonSubsequence(String text1, String text2) {
+                    int m = text1.length(), n = text2.length();
+                    int[][] dp = new int[m + 1][n + 1];
+                    
+                    for (int i = 1; i <= m; i++) {
+                        for (int j = 1; j <= n; j++) {
+                            if (text1.charAt(i - 1) == text2.charAt(j - 1)) {
+                                dp[i][j] = dp[i - 1][j - 1] + 1;
+                            } else {
+                                dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+                            }
+                        }
+                    }
+                    return dp[m][n];
+                }
+            }
+
+    3.3 Subset and Knapsack Problem
+    
+    Subset problems involve selecting or rejecting elements. Examples include 0/1 Knapsack, Subset Sum, and Partition Equal Subset Sum.
+
+    Example: 0/1 Knapsack
+        public class Knapsack {
+            public static int knapsack(int[] weights, int[] values, int W) {
+                int n = weights.length;
+                int[][] dp = new int[n + 1][W + 1];
+                
+                for (int i = 1; i <= n; i++) {
+                    for (int w = 1; w <= W; w++) {
+                        if (weights[i - 1] <= w) {
+                            dp[i][w] = Math.max(dp[i - 1][w], dp[i - 1][w - weights[i - 1]] + values[i - 1]);
+                        } else {
+                            dp[i][w] = dp[i - 1][w];
+                        }
+                    }
+                }
+                return dp[n][W];
+            }
+        }
+
+
+
+4. Optimizing Space Complexity
+    4.1 Reducing 2D DP to 1D DP
+    Some DP problems can be optimized to use a single array instead of a 2D table.
+
+        Example: 0/1 Knapsack Space Optimization
+            public class KnapsackOptimized {
+                public static int knapsack(int[] weights, int[] values, int W) {
+                    int n = weights.length;
+                    int[] dp = new int[W + 1];
+                    
+                    for (int i = 0; i < n; i++) {
+                        for (int w = W; w >= weights[i]; w--) {
+                            dp[w] = Math.max(dp[w], dp[w - weights[i]] + values[i]);
+                        }
+                    }
+                    return dp[W];
+                }
+            }
+
+
+
+5. Steps to Solve DP Problems
+	1. Identify the problem as a DP problem by checking for overlapping subproblems and optimal substructure.
+	2. Define the state (dp[i]) that represents the solution to a subproblem.
+	3. Determine the recurrence relation that transitions from smaller subproblems to larger ones.
+	4. Choose between Memoization and Tabulation based on problem constraints.
+	5. Optimize space complexity if possible.
+	6. Implement and test.
+
+
+
+6. Common DP Problems
+	• Fibonacci Sequence
+	• Climbing Stairs
+	• House Robber
+	• Coin Change
+	• Longest Common Subsequence (LCS)
+	• Longest Increasing Subsequence (LIS)
+	• Edit Distance
+	• Knapsack Problem
+	• Matrix Chain Multiplication
+	• Palindromic Substrings
+
+
+
+By mastering these patterns, you can solve many DP problems efficiently.

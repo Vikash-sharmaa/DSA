@@ -1,4 +1,4 @@
-/*
+/*  https://leetcode.com/problems/house-robber-ii/description/
  *
  *    
      Logic: 
@@ -34,7 +34,7 @@ class Solution {
     
         // Exclude the first house and consider robbing the rest.
         int[] leaveFirst = new int[n - 1];
-        for (int i = 1; i < n; i++) leaveFirst[i - 1] = nums[i];
+        for (int i = 0; i < n-1; i++) leaveFirst[i] = nums[i+1];
 
         // Exclude the last house and consider robbing the rest.
         int[] leaveLast = new int[n - 1];
