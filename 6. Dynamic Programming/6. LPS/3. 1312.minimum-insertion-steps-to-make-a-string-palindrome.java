@@ -1,4 +1,5 @@
-/*
+/*  https://leetcode.com/problems/minimum-insertion-steps-to-make-a-string-palindrome/description/
+
  * @lc app=leetcode id=1312 lang=java
  *
  * // minimum insertion / minimum deletion === length of string - LPS

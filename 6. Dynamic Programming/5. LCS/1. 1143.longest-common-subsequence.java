@@ -1,4 +1,5 @@
-/*
+/*  https://leetcode.com/problems/longest-common-subsequence/description/
+
  * @lc app=leetcode id=1143 lang=java
  *
  * [1143] Longest Common Subsequence

@@ -1,0 +1,169 @@
+/* https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/
+
+ * @lc app=leetcode id=188 lang=java
+ *
+ * [188] Best Time to Buy and Sell Stock IV
+ */
+
+// @lc code=start
+class Solution {
+
+
+    /**************************************************************************************************************/
+    // Time: O(2^n)     Space: O(n)
+        public int maxProfit_Recursive(int[] prices,int idx,int bought,int transaction,int maxTransaction) {
+            if(transaction==maxTransaction) return 0;
+    
+            if(idx==prices.length) return 0;
+    
+            int profit=0;
+            if(bought==0){
+                int buy = -prices[idx] + maxProfit_Recursive(prices, idx+1, 1, transaction,maxTransaction);
+                int dontBuy = maxProfit_Recursive(prices, idx+1, 0, transaction,maxTransaction);
+                profit = Math.max(buy, dontBuy);
+            }else{
+                int sell = prices[idx] + maxProfit_Recursive(prices, idx+1, 0, transaction+1,maxTransaction);
+                int dontSell = maxProfit_Recursive(prices, idx+1, 1, transaction,maxTransaction);
+                profit=Math.max(sell, dontSell);
+            }
+            return profit;
+        }
+    
+    /**************************************************************************************************************/
+    
+        // public int maxProfit_Memo(int[] prices,int idx,int bought,int transaction,Map<String,Integer> dp) {
+        //     if(transaction==2) return 0;
+    
+        //     if(idx==prices.length) return 0;
+    
+        //     String key = idx+":"+bought+":"+transaction;
+        //     if(dp.containsKey(key)) return dp.get(key);
+        //     int profit=0;
+        //     if(bought==0){
+        //         int buy = -prices[idx] + maxProfit_Memo(prices, idx+1, 1, transaction,dp);
+        //         int dontBuy = maxProfit_Memo(prices, idx+1, 0, transaction,dp);
+        //         profit = Math.max(buy, dontBuy);
+        //     }else{
+        //         int sell = prices[idx] + maxProfit_Memo(prices, idx+1, 0, transaction+1,dp);
+        //         int dontSell = maxProfit_Memo(prices, idx+1, 1, transaction,dp);
+        //         profit=Math.max(sell, dontSell);
+        //     }
+        //     dp.put(key, profit);
+        //     return profit;
+        // }
+    
+    // Time: O(n*k*2)     Space: O(n*k*2)+O(n)
+    
+        public int maxProfit_Memo(int[] prices,int idx,int bought,int transaction,int maxTransaction,int[][][] dp) {
+            if(transaction==maxTransaction) return 0;
+    
+            if(idx==prices.length) return 0;
+    
+            if(dp[idx][bought][transaction]!=-1) return dp[idx][bought][transaction];
+            int profit=0;
+            if(bought==0){
+                int buy = -prices[idx] + maxProfit_Memo(prices, idx+1, 1, transaction,maxTransaction,dp);
+                int dontBuy = maxProfit_Memo(prices, idx+1, 0, transaction,maxTransaction,dp);
+                profit = Math.max(buy, dontBuy);
+            }else{
+                int sell = prices[idx] + maxProfit_Memo(prices, idx+1, 0, transaction+1,maxTransaction,dp);
+                int dontSell = maxProfit_Memo(prices, idx+1, 1, transaction,maxTransaction,dp);
+                profit=Math.max(sell, dontSell);
+            }
+            return dp[idx][bought][transaction] = profit;
+        }
+    
+    /**************************************************************************************************************/
+    
+    // Time: O(n*k*2)     Space: O(6*n)
+    
+        public int maxProfit_Tabulation(int maxTransaction,int[] prices) {
+            int n = prices.length;
+            int[][][] dp = new int[n + 1][2][maxTransaction+1]; // (day, holding/not, maxTransaction)
+    
+            // Base case: No need to explicitly initialize, as Java arrays default to 0
+    
+            for (int i = n - 1; i >= 0; i--) {
+                for (int j = 0; j <= 1; j++) { // 0 = No stock held, 1 = Stock held
+                    for (int k = 0; k < maxTransaction; k++) { // Transactions used till maxTransactions
+                        int profit = 0;
+                        if (j == 0) { // Buying allowed
+                            int buy = -prices[i] + dp[i + 1][1][k]; // Buy stock
+                            int dontBuy = dp[i + 1][0][k]; // Skip buying
+                            profit = Math.max(buy, dontBuy);
+                        } else { // Selling allowed
+                            int sell = prices[i] + dp[i + 1][0][k + 1]; // Sell stock
+                            int dontSell = dp[i + 1][1][k]; // Skip selling
+                            profit = Math.max(sell, dontSell);
+                        }
+                        dp[i][j][k] = profit;
+                    }
+                }
+            }
+    
+            return dp[0][0][0]; // Start with no stock and 0 transactions used
+        }
+    
+    /**************************************************************************************************************/
+    
+    // Time: O((n*k*2)     Space: O(1)
+        public int maxProfit_SpaceOptimized(int maxTransaction,int[] prices) {
+            int n = prices.length;
+            
+            // Using only two 2D arrays to optimize space complexity from O(n) to O(1)
+            int[][] after = new int[2][maxTransaction+1]; // Represents dp[i+1] state (next day)
+            int[][] curr = new int[2][maxTransaction+1];  // Represents dp[i] state (current day)
+    
+            // No need for explicit base case initialization, as Java arrays default to 0
+    
+            // Start iterating from the last day backwards (bottom-up approach)
+            for (int i = n - 1; i >= 0; i--) {
+                for (int j = 0; j <= 1; j++) { // 0 = No stock held, 1 = Stock held
+                    for (int k = 0; k < maxTransaction; k++) { // Transactions used (0 or 1)
+                        int profit = 0;
+                        
+                        if (j == 0) { // Buying is allowed when no stock is held
+                            int buy = -prices[i] + after[1][k]; // Buy stock and move to "holding" state
+                            int dontBuy = after[0][k]; // Skip buying and stay in "not holding" state
+                            profit = Math.max(buy, dontBuy); // Max profit from either decision
+                        } else { // Selling is allowed when stock is held
+                            int sell = prices[i] + after[0][k + 1]; // Sell stock and use one transaction
+                            int dontSell = after[1][k]; // Skip selling and keep holding
+                            profit = Math.max(sell, dontSell); // Max profit from either decision
+                        }
+                        
+                        curr[j][k] = profit; // Store the result for the current state
+                    }
+                }
+                
+                // Move to the next day (update after → curr)
+                after = curr; // This efficiently replaces dp[i+1] with dp[i]
+            }
+    
+            return after[0][0]; // Maximum profit starting with no stock and 0 transactions used
+        }
+    
+    /**************************************************************************************************************/
+        public int maxProfit(int maxTransaction, int[] prices) {
+            
+            //return maxProfit_Recursive(prices, 0, 0, 0,maxTransaction);
+            int[][][] dp = new int[prices.length][2][maxTransaction]; // Using max idx, bought (0/1), transaction (0/1)
+            for(int i=0;i<prices.length;i++){
+                for(int j=0;j<=1;j++){
+                    for(int k=0;k<maxTransaction;k++){
+                        dp[i][j][k]=-1;
+                    }
+                }
+            }
+    
+            //return maxProfit_Memo(prices, 0, 0, 0,maxTransaction, dp);
+    
+            //return maxProfit_Tabulation(maxTransaction,prices);
+    
+            return maxProfit_SpaceOptimized(maxTransaction,prices);
+        }
+    /**************************************************************************************************************/
+    
+    }
+// @lc code=end
+

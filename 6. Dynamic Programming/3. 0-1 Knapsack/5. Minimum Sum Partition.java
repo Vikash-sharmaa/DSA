@@ -1,4 +1,16 @@
- 
+ /*
+        Given an array arr[]  containing non-negative integers, the task is to divide it into two sets set1 and set2 such that the absolute difference between their sums is minimum 
+            and find the minimum difference.
+
+        Examples:
+
+            Input: arr[] = [1, 6, 11, 5]
+            Output: 1
+            Explanation: 
+            Subset1 = {1, 5, 6}, sum of Subset1 = 12 
+            Subset2 = {11}, sum of Subset2 = 11 
+            Hence, minimum difference is 1.
+  */
  /*
         Our question wants us to minimize( S2 - S1)
             We know that,

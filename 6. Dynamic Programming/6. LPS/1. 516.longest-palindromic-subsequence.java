@@ -1,4 +1,6 @@
-/*
+/*  https://leetcode.com/problems/longest-palindromic-subsequence/description/
+
+
  * @lc app=leetcode id=516 lang=java
  *
  * The LCS between a string and its reversed version gives the length of the longest palindromic subsequence

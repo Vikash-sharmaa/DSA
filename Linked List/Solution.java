@@ -93,11 +93,11 @@ class Main{
 /********************************************************************************************************************************/
 
     static Node deleteFromTail(Node head){
-        if(head==null || head.next==null) return null;
+        if(head==null || head.next==null) return null;   // if no elements in LL or only one element 
 
         Node mover= head;
 
-        while(mover.next.next!=null){
+        while(mover.next.next!=null){                   // this required atleaset 2 nodes // it will stop at second last element where nodes in LL are atleast 2
             mover=mover.next;
         }
 
@@ -107,6 +107,132 @@ class Main{
     }
 
 /********************************************************************************************************************************/
+
+    static Node deleteKthElement(Node head,int k){
+        if(head==null) return null;
+
+        if(k==1){
+            head=head.next;
+            return head;
+        }
+
+        int counter=0;
+        Node prev=null;
+        Node mover=head;
+        while(mover!=null){
+            counter++;
+
+            if(counter==k){
+                prev.next=prev.next.next;
+                break;
+            }
+
+            prev=mover;
+            mover=mover.next;
+        }
+        return head;
+    }
+
+/********************************************************************************************************************************/
+
+    static Node deleteElementWithGivenValue(Node head,int val){
+        if(head==null) return null;
+
+        if(head.data==val){
+            head=head.next;
+            return head;
+        }
+
+        Node prev=null;
+        Node mover=head;
+        while(mover!=null){
+            if(mover.data==val){
+                prev.next=prev.next.next;
+                break;
+            }
+            prev=mover;
+            mover=mover.next;
+        }
+        return head;
+    }
+
+/********************************************************************************************************************************/
+
+    static Node insertAtHead(Node head,int val){
+        Node newNode = new Node(val);
+        if(head==null){
+            head=newNode;
+            return head;
+        }
+        newNode.next=head;
+        head=newNode;
+        return head;
+        /*
+            above whole code gives same result as below three lines.
+
+            Node newNode = new Node(val);
+            newNode.next=head;
+            return newNode;
+         */
+    }
+
+/********************************************************************************************************************************/
+
+// Time: O(n)
+    static Node insertAtTail(Node head,int val){
+        Node newNode = new Node(val);
+        if(head==null){
+            head=newNode;
+            return head;
+        }
+        Node mover=head;
+        while(mover.next!=null){
+            mover=mover.next;
+        }
+        mover.next=newNode;
+        return head;
+    }
+    /*
+    For O(1) - time , maintain a tail pointer.
+
+        void insertAtTail(int val) {
+            Node newNode = new Node(val);
+            if (head == null) {
+                head = tail = newNode;
+            } else {
+                tail.next = newNode;
+                tail = newNode;
+            }
+        }
+     */
+/********************************************************************************************************************************/
+
+// k > n+1 (Out of Bounds)
+
+    // Time: O(n)
+    static Node insertAtKthPosition(Node head,int k,int val){
+        Node newNode = new Node(val);
+        if(head==null){
+            if(k==1) head=newNode;
+            return head;
+        }
+        int counter=0;
+        Node mover=head;
+
+        while(mover!=null){
+            counter++;
+            if(counter==k-1){
+                newNode.next=mover.next;
+                mover.next=newNode;
+                 break;
+            }
+            mover=mover.next;
+        }
+        return head;
+    }
+
+
+
    
     public static void main(String[] args){
         int[] nums = new int[]{3,5,2,6,7,4};

@@ -1,4 +1,5 @@
-/*
+/*  https://leetcode.com/problems/delete-operation-for-two-strings/description/
+
  * @lc app=leetcode id=583 lang=java
  *
  * Deletions Needed:
