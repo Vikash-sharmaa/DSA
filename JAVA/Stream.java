@@ -27,7 +27,7 @@ public class Stream {
 
         // Filtering Students by First Name
 
-        // 1. Retrieves students whose first names start with 'A' using filter()
+        // 1. Retrieves students whose first names start with 'A'
 
         List<Student> studentWithA = students.stream()
                                              .filter(x->x.getFirstName().startsWith("A"))
@@ -37,8 +37,6 @@ public class Stream {
 /********************************************************************************************************************************************************************************************************************/
 
         // Grouping objects by Department
-
-        // 
 
         Map<String,List<Student>> studentsInEachDepartment = students.stream()
                                                                .collect(Collectors.groupingBy(Student :: getDepartmentName));

@@ -39,8 +39,13 @@ class Solution {
    }
 /***************************************************************************************/
 
+   // we can revere the whole list and compare each fromstarting till last
+
+
+/***************************************************************************************/
 // ListNode reversedHead = reverseList(head); - cant do this - else original LL will be reversed
-   public ListNode reverseList(ListNode head) {
+   
+    public ListNode reverseList(ListNode head) {
        ListNode prev=null;
        ListNode next=null;
        ListNode curr=head;
@@ -59,7 +64,7 @@ class Solution {
        ListNode fast = head;
 
        // Step 1: Find the middle of the linked list using slow and fast pointers
-       // when we want to stop slow at first middle of even list - so we stop first at second last 
+       // when we want to stop slow at first middle of even list - so we stop fast at second last 
        while (fast.next != null && fast.next.next != null) { // Move fast by 2 steps and slow by 1 step
            fast = fast.next.next;
            slow = slow.next;
