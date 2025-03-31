@@ -33,29 +33,25 @@ class Solution {
 
 /************************************************************************************************/
 
+    // best
+    //  Finding Lower Bound
     // Time:- O(log(n))      ||      Space:- O(1))
 
     public int searchInsert2(int[] nums, int target) {
         int n = nums.length;  // Get the length of the array
         int start = 0, end = n - 1;  // Initialize the search boundaries
-        int probable = 0;  // Variable to store the probable insert position
+        int probable = n;  // Variable to store the probable insert position
     
         while (start <= end) {  // Perform binary search
             int mid = start + (end - start) / 2;  // Calculate the middle index to prevent overflow
-    
-            if (nums[mid] == target) return mid;  // If target is found, return its index
-            
-            else if (nums[mid] < target) {  // If target is greater, search in the right half
-                probable = mid + 1;  // Update probable position (target would be inserted at mid+1)
-                start = mid + 1;  // Move the start pointer to narrow the search
-            } 
-            
-            else {  // If target is smaller, search in the left half
-                end = mid - 1;  // Move the end pointer to narrow the search
+            if(nums[mid]>=target){
+                probable=mid;
+                end=mid-1;
+            }else{
+                start=mid+1;
             }
         }
-    
-        return probable;  // Return the probable insert position if target is not found
+        return probable;
     }
     
 /************************************************************************************************/
@@ -92,7 +88,7 @@ class Solution {
 /************************************************************************************************/
 
     public int searchInsert(int[] nums, int target) {
-        return searchInsert3(nums, target);
+        return searchInsert2(nums, target);
     }
 }
 // @lc code=end

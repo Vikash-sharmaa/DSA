@@ -1,0 +1,228 @@
+Immutable Class in Java
+An immutable class is a class whose objects cannot be modified after creation. Any modification results in a new object.
+
+✅ Rules for an Immutable Class
+Declare the class as final → To prevent subclassing.
+Make all fields private and final → To prevent modification after object creation.
+Do not provide setters → No methods to modify fields.
+Initialize all fields via constructor → Ensure values are assigned only once.
+Return defensive copies of mutable fields → Prevent external modification.
+🔹 Example: Immutable Student Class
+public final class Student {
+    private final int id;
+    private final String name;
+    private final Address address; // Mutable object
+
+    public Student(int id, String name, Address address) {
+        this.id = id;
+        this.name = name;
+        this.address = new Address(address.getStreet(), address.getCity()); // Defensive copy
+    }
+
+    public int getId() { return id; }
+    public String getName() { return name; }
+
+    // Defensive copy to prevent modification
+    public Address getAddress() {
+        return new Address(address.getStreet(), address.getCity());
+    }
+
+    @Override
+    public String toString() {
+        return "Student{id=" + id + ", name='" + name + "', address=" + address + "}";
+    }
+}
+
+// Mutable class (not immutable)
+class Address {
+    private String street;
+    private String city;
+
+    public Address(String street, String city) {
+        this.street = street;
+        this.city = city;
+    }
+
+    public String getStreet() { return street; }
+    public String getCity() { return city; }
+    public void setStreet(String street) { this.street = street; }
+    public void setCity(String city) { this.city = city; }
+
+    @Override
+    public String toString() {
+        return "Address{street='" + street + "', city='" + city + "'}";
+    }
+}
+🔹 Use Case of Immutable Class
+✅ Thread Safety (No Synchronization Needed)
+Immutable objects are inherently thread-safe as their state cannot change.
+
+✅ Caching & Performance Optimization
+Since they don’t change, same objects can be reused to reduce object creation overhead.
+
+✅ Preventing Unintended Side Effects
+Since objects cannot be modified, they help in avoiding accidental data corruption.
+
+🔹 Example Use Case: Caching Configuration in a System
+public final class AppConfig {
+    private static final AppConfig INSTANCE = new AppConfig("localhost", 8080);
+
+    private final String host;
+    private final int port;
+
+    private AppConfig(String host, int port) {
+        this.host = host;
+        this.port = port;
+    }
+
+    public static AppConfig getInstance() {
+        return INSTANCE;
+    }
+
+    public String getHost() { return host; }
+    public int getPort() { return port; }
+}
+💡 Benefit:
+Since AppConfig is immutable, it ensures configuration values never change at runtime, making it safe for multi-threading.
+
+🎯 Final Thoughts
+✅ Immutable classes are essential for thread safety, caching, and ensuring reliability in a system.
+🚀 They are widely used in Java collections (String, Integer) and system configurations.
+
+
+
+
+
+Immutable Class with Two Object Creations Example
+Let's consider a real-world scenario where we create two immutable Student objects and see how they behave.
+
+🔹 Immutable Student Class
+public final class Student {
+    private final int id;
+    private final String name;
+
+    public Student(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public int getId() { return id; }
+    public String getName() { return name; }
+
+    @Override
+    public String toString() {
+        return "Student{id=" + id + ", name='" + name + "'}";
+    }
+}
+🔹 Creating Two Immutable Objects
+public class Main {
+    public static void main(String[] args) {
+        // Creating two immutable Student objects
+        Student student1 = new Student(101, "Alice");
+        Student student2 = new Student(102, "Bob");
+
+        System.out.println(student1); // Output: Student{id=101, name='Alice'}
+        System.out.println(student2); // Output: Student{id=102, name='Bob'}
+
+        // Attempting modification (Not Possible)
+        // student1.name = "Charlie"; // Compilation Error (name is final)
+
+        // Creating a new object instead
+        Student student3 = new Student(101, "Charlie");
+        System.out.println(student3); // Output: Student{id=101, name='Charlie'}
+    }
+}
+🔹 Key Takeaways
+✅ Once created, an immutable object's state cannot be modified.
+✅ To "change" data, we must create a new object instead of modifying an existing one.
+✅ Immutable objects are thread-safe and can be safely shared across multiple threads.
+✅ Used in caching, database models, and multi-threaded environments.
+
+
+
+
+
+
+🔹 Immutable Class Use Cases with Examples
+Immutable objects are widely used in caching, database models, and multi-threaded environments because they ensure thread safety and consistency. Below are examples of each use case.
+
+1️⃣ Caching (Key in HashMap or Redis Cache)
+
+Use Case:
+Immutable objects can be used as keys in a cache (like HashMap or Redis) to ensure consistent hashing and prevent accidental modifications.
+Example: Using Immutable Object as a Key in HashMap
+import java.util.HashMap;
+import java.util.Map;
+
+public class CacheExample {
+    public static void main(String[] args) {
+        Map<Student, String> cache = new HashMap<>();
+        
+        Student student1 = new Student(101, "Alice");
+        Student student2 = new Student(102, "Bob");
+
+        cache.put(student1, "Grade A");
+        cache.put(student2, "Grade B");
+
+        // Fetching from cache
+        System.out.println(cache.get(new Student(101, "Alice"))); // Output: Grade A
+    }
+}
+✔ Why Immutable?
+
+If Student were mutable and its id changed, the HashMap would fail to retrieve the correct value due to key hashing issues.
+2️⃣ Database Models (JPA/Hibernate)
+
+Use Case:
+Immutable objects are used in Entity classes in JPA/Hibernate to prevent accidental modifications of records.
+Example: Immutable Student Entity in JPA
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "students")
+public final class Student {
+    @Id
+    private final int id;
+    private final String name;
+
+    public Student(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public int getId() { return id; }
+    public String getName() { return name; }
+}
+✔ Why Immutable?
+
+Prevents accidental updates to data fetched from the database.
+Promotes immutability in ORM frameworks.
+3️⃣ Multi-threading (Thread-Safe Objects)
+
+Use Case:
+In multi-threaded applications, immutable objects do not require synchronization and can be safely shared among multiple threads.
+Example: Sharing Immutable Objects Between Threads
+public class MultiThreadExample {
+    public static void main(String[] args) {
+        Student student = new Student(201, "Charlie");
+
+        Runnable task = () -> {
+            System.out.println(Thread.currentThread().getName() + " - " + student.getName());
+        };
+
+        Thread thread1 = new Thread(task);
+        Thread thread2 = new Thread(task);
+
+        thread1.start();
+        thread2.start();
+    }
+}
+✔ Why Immutable?
+
+No risk of data inconsistency or race conditions since the object state never changes.
+🔹 Key Takeaways
+✅ Caching: Prevents key modification issues in hash-based caching mechanisms.
+✅ Database Models: Ensures data integrity by preventing unintended changes.
+✅ Multi-threading: Eliminates synchronization needs, making objects thread-safe.

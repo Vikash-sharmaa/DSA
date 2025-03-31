@@ -1,0 +1,35 @@
+public int binarySearchCapacity(int[] arr, int conditionValue) {
+    int low = getMinimumPossibleCapacity(arr);   // Usually max(arr)
+    int high = getMaximumPossibleCapacity(arr);  // Usually sum(arr)
+    int res = -1;
+
+    while (low <= high) {
+        int mid = low + (high - low) / 2;
+
+        if (isPossible(arr, mid, conditionValue)) {
+            res = mid;        // ✅ Found a possible answer, try for smaller
+            high = mid - 1;   // Search in left
+        } else {
+            low = mid + 1;    // ❌ Not possible, search right
+        }
+    }
+
+    return res;
+}
+
+
+
+// For problems like ship, bananas, split array, etc.
+private boolean isPossible(int[] arr, int capacity, int conditionValue) {
+    // Check whether given capacity is enough to satisfy the conditionValue
+    // You have to fill this based on question requirement
+    
+    return true/false;
+}
+
+
+
+1. Find ranges 
+2. use range for BS
+3. if for any range value you got the answer - minimize it more - (end=mid-1 usually)
+

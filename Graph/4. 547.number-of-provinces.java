@@ -3,7 +3,7 @@ package Graph;
 
  * @lc app=leetcode id=547 lang=java
  *
- * [547] Number of Provinces
+ * [547] Number of Provinces === Number of connected components of a graph
  */
 
 // @lc code=start

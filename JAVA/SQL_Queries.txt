@@ -141,7 +141,38 @@ Most asked SQL queries-
 
 /******************************************************************************************************************************/
 
+    16. Display last n records
 
+        SELECT * FROM emp
+            ORDER BY emp_id DESC  -- Assuming emp_id is the ordering column
+            FETCH FIRST 2 ROWS ONLY;
+
+        select * from emp
+            minus
+        select * from emp
+        where rownum <=(select count(*)-2 from emp);
+
+
+        select * from (select rownum r from emp)
+            where r>(select count(*)-2 from emp);
+
+/******************************************************************************************************************************/
+
+    17. Display nth maxSalary
+
+        select * from(select distinct sal from emp order by sal desc)
+        where rownum<=3; 
+            minus
+        select * from(select distinct sal from emp order by sal desc)
+        where rownum<=2;
+
+
+
+
+            SELECT salary 
+                FROM emp 
+                ORDER BY salary DESC 
+                OFFSET N-1 ROWS FETCH NEXT 1 ROW ONLY;
 
 
 

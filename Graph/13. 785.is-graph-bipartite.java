@@ -1,9 +1,10 @@
-/*
+/* https://leetcode.com/problems/is-graph-bipartite/description/
+
  * @lc app=leetcode id=785 lang=java
  *
  *  If a graph is linear - it will always be bipartite
  *  If a graph has even circle - it will be bipartite
- *  If graph has odd circle - not bipartite
+ *  If graph has odd circle - can never bipartite
  */
 
 

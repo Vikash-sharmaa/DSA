@@ -23,6 +23,11 @@ class Pair{
 }
 
 class Solution {
+    int[][] dirs = {{0,-1},{-1,0},{0,1},{1,0}};
+
+    boolean isValid(int row,int col,int m,int n,int startColor,boolean[][] visited,int[][] image){
+        return row>=0 && row<m && col>=0 && col<n && !visited[row][col] && image[row][col]==startColor;
+    }
 
 /********************************************************************************************************************/
 
@@ -34,25 +39,15 @@ class Solution {
         image[row][col] = color;
     
         // Explore the four possible directions (up, down, left, right)
-    
-        // Move Up: If the cell above is within bounds, has the original color, and is not visited, recurse
-        if (row - 1 >= 0 && image[row - 1][col] == startColor && !visited[row - 1][col]) {
-            dfs(image, m, n, row - 1, col, startColor, color, visited);
-        }
-    
-        // Move Down: If the cell below is within bounds, has the original color, and is not visited, recurse
-        if (row + 1 < m && image[row + 1][col] == startColor && !visited[row + 1][col]) {
-            dfs(image, m, n, row + 1, col, startColor, color, visited);
-        }
-    
-        // Move Left: If the cell to the left is within bounds, has the original color, and is not visited, recurse
-        if (col - 1 >= 0 && image[row][col - 1] == startColor && !visited[row][col - 1]) {
-            dfs(image, m, n, row, col - 1, startColor, color, visited);
-        }
-    
-        // Move Right: If the cell to the right is within bounds, has the original color, and is not visited, recurse
-        if (col + 1 < n && image[row][col + 1] == startColor && !visited[row][col + 1]) {
-            dfs(image, m, n, row, col + 1, startColor, color, visited);
+
+
+        for(int[] dir : dirs){
+            int newRow = row + dir[0];
+            int newCol = col + dir[1];
+
+            if(isValid(newRow,newCol,m,n,startColor,visited,image)){
+                dfs(image, m, n, newRow, newCol, startColor, color, visited);
+            }
         }
     }
 
@@ -83,29 +78,15 @@ class Solution {
             image[row][col] = color;
 
             // Explore the four possible directions (up, down, left, right)
-            
-            // Move Up
-            if (row - 1 >= 0 && image[row - 1][col] == startColor && !visited[row - 1][col]) {
-                visited[row - 1][col] = true;
-                queue.add(new Pair(row - 1, col));
-            }
 
-            // Move Down
-            if (row + 1 < m && image[row + 1][col] == startColor && !visited[row + 1][col]) {
-                visited[row + 1][col] = true;
-                queue.add(new Pair(row + 1, col));
-            }
+            for(int[] dir : dirs){
+                int newRow = row + dir[0];
+                int newCol = col + dir[1];
 
-            // Move Left
-            if (col - 1 >= 0 && image[row][col - 1] == startColor && !visited[row][col - 1]) {
-                visited[row][col - 1] = true;
-                queue.add(new Pair(row, col - 1));
-            }
-
-            // Move Right
-            if (col + 1 < n && image[row][col + 1] == startColor && !visited[row][col + 1]) {
-                visited[row][col + 1] = true;
-                queue.add(new Pair(row, col + 1));
+                if(isValid(newRow,newCol,m,n,startColor,visited,image)){
+                    visited[newRow][newCol] = true;
+                    queue.add(new Pair(newRow, newCol));
+                }
             }
         }
         return image; // Return the modified image

@@ -24,6 +24,12 @@ class Pair{
     }
 }
 class Solution {
+    int[][] dirs = {{0,-1},{-1,0},{0,1},{1,0}};
+
+    boolean isValid(int newRow,int newCol,int m,int n,boolean[][] visited,char[][] grid){
+        return newRow>=0 && newRow<m && newCol>=0 && newCol<n && visited[newRow][newCol]==false && grid[newRow][newCol]=='1';
+    }
+    
     // Helper method to perform BFS traversal from a given starting cell
     void bfs(Pair start, char[][] grid, boolean[][] visited) {
         int m = grid.length; // Number of rows in the grid
@@ -40,28 +46,14 @@ class Solution {
 
             // Explore the four possible directions (up, down, left, right)
             
-            // Move Up
-            if (row - 1 >= 0 && grid[row - 1][col] == '1' && !visited[row - 1][col]) {
-                visited[row - 1][col] = true;
-                queue.offerLast(new Pair(row - 1, col));
-            }
+            for(int[] dir : dirs){
+                int newRow   = row+dir[0];
+                int newCol = col+dir[1];
 
-            // Move Down
-            if (row + 1 < m && grid[row + 1][col] == '1' && !visited[row + 1][col]) {
-                visited[row + 1][col] = true;
-                queue.offerLast(new Pair(row + 1, col));
-            }
-
-            // Move Left
-            if (col - 1 >= 0 && grid[row][col - 1] == '1' && !visited[row][col - 1]) {
-                visited[row][col - 1] = true;
-                queue.offerLast(new Pair(row, col - 1));
-            }
-
-            // Move Right
-            if (col + 1 < n && grid[row][col + 1] == '1' && !visited[row][col + 1]) {
-                visited[row][col + 1] = true;
-                queue.offerLast(new Pair(row, col + 1));
+                if(isValid(newRow, newCol, m, n, visited, grid)){
+                    visited[newRow][newCol]=true;
+                    queue.add(new Pair(newRow, newCol));
+                }
             }
         }
     }
@@ -90,3 +82,17 @@ class Solution {
 }
 // @lc code=end
 
+
+/*
+    void dfs(int i,int j,int m,int n,char[][] grid,boolean[][] vis){
+        vis[i][j]=true;
+        for(int[] dir : dirs){
+            int newI = i+dir[0];
+            int newJ = j+dir[1];
+            if(newI>=0 && newI<m && newJ>=0 && newJ<n && grid[newI][newJ]=='1' && !vis[newI][newJ]){
+                dfs(newI,newJ,m,n,grid,vis);
+            }
+        }
+        
+    }
+ */

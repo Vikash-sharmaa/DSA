@@ -1,3 +1,66 @@
+/*
+        Student::getMarks works in streams and functional interfaces because Java automatically provides the instance.
+        If you try Student::getMarks outside a functional interface, you'll get an error because Java won't know which Student instance to call it on.
+ */
+
+
+ /*
+        
+        When to Use mapToInt(), mapToDouble(), or mapToLong()
+        Use primitive streams (IntStream, DoubleStream, LongStream) when you need to work with numeric values to improve performance. These avoid unnecessary boxing and unboxing, making operations more efficient.
+
+        ✅ Use mapToInt(), mapToDouble(), mapToLong() when:
+
+        1️⃣ You need numerical operations (e.g., sum(), average(), max(), min()).
+        2️⃣ You want to avoid unnecessary boxing/unboxing (e.g., Integer, Double, Long).
+        3️⃣ You don’t need to map values to objects later (since primitive streams don’t allow mapping to non-primitive types).
+
+        Examples of When to Use mapToInt()
+        1️⃣ Finding Maximum Age Efficiently (IntStream.max())
+
+        int maxAge = students.stream()
+                        .mapToInt(Student::getAge)
+                        .max()
+                        .orElse(-1);  // Avoids boxing/unboxing
+
+        System.out.println(maxAge);
+        ✔ Efficient: Uses IntStream, avoiding Integer boxing/unboxing.
+
+        2️⃣ Finding the Sum of All Salaries (IntStream.sum())
+
+        int totalSalary = employees.stream()
+                                .mapToInt(Employee::getSalary)
+                                .sum();
+        ✔ Better than map(Employee::getSalary).reduce(0, Integer::sum) because it avoids unnecessary boxing.
+
+        3️⃣ Finding the Average Score (DoubleStream.average())
+
+        double avgScore = students.stream()
+                                .mapToDouble(Student::getScore)
+                                .average()
+                                .orElse(0.0);
+        ✔ More efficient than using map(Student::getScore).collect(Collectors.averagingDouble(x -> x)).
+
+        When NOT to Use mapToInt() (Use map() Instead)
+        Use map() when you need to work with objects, not just primitive types.
+
+        ❌ Don’t Use mapToInt() When You Need an Object Later
+
+        List<Student> topScorers = students.stream()
+                                        .filter(s -> s.getScore() > 90)
+                                        .collect(Collectors.toList());  // Needs objects
+        ✔ Here, mapToInt() won’t work because we need Student objects, not just int values.
+
+        ❌ Don’t Use mapToInt() When You Need Comparisons on Objects
+
+        Student oldestStudent = students.stream()
+                                        .max(Comparator.comparing(Student::getAge))
+                                        .orElse(null);
+        ✔ max() on Stream<Student> is needed because we want the student, not just the age.
+
+
+  */
+
 package JAVA;
 
 import java.util.Arrays;
@@ -75,6 +138,21 @@ public class Stream {
         int maxAge = students.stream()
                               .mapToInt(Student :: getAge)
                               .max().orElse(-1);
+
+
+        Integer maxAgeWrapper = students.stream()
+                         .map(Student::getAge)        // Extracts ages from students
+                         .max(Integer::compareTo)     // Finds max age
+                         .orElse(-1);
+
+        boolean hasMaxAge = students.stream()
+                         .map(Student::getAge)
+                         .max(Integer::compareTo)
+                         .isPresent();
+
+        Student withMaxAge = students.stream()
+                         .max(Comparator.comparing(Student :: getAge).reversed())
+                         .orElse(null);   // .get()
 
 /********************************************************************************************************************************************************************************************************************/
                       
@@ -173,6 +251,35 @@ public class Stream {
                                                 .filter(dt -> dt.getCity().equals("Delhi"))
                                                 .sorted(Comparator.comparing(Student::getFirstName).reversed())
                                                 .collect(Collectors.toList());
+
+        
+        List<Student> sortByLengthSameThenName = students.stream()
+                                                .filter(dt -> dt.getCity().equals("Delhi"))
+                                                .sorted(Comparator.comparingInt((Student s) -> s.getFirstName().length()) // Sort by name length
+                                                        .thenComparing(Student::getFirstName) // Then sort alphabetically
+                                                        .reversed()) // Reverse for descending order
+                                                .collect(Collectors.toList());
+
+        List<Student> sortedStudents = students.stream()
+                                                .sorted(Comparator.comparing(Student::getFirstName)
+                                                        .thenComparingInt(Student::getAge)) // `thenComparingInt` for integer comparison
+                                                .collect(Collectors.toList());
+
+        
+        List<Student> sortedStudentsNameDescAgeDesc = students.stream()
+                                                .sorted(Comparator.comparing(Student::getFirstName).reversed() // Name descending
+                                                        .thenComparing(Comparator.comparingInt(Student::getAge).reversed())) // Age descending
+                                                .collect(Collectors.toList());
+
+        List<Student> sortedStudentsAgeDsc = students.stream()
+                                                .sorted(Comparator.comparing(Student::getFirstName) // Name Ascending (A → Z)
+                                                        .thenComparing(Comparator.comparingInt(Student::getAge).reversed())) // Age Descending (High → Low)
+                                                .collect(Collectors.toList());
+                                        
+                                        
+
+        
+                                        
         
 
 
@@ -220,8 +327,9 @@ public class Stream {
 /********************************************************************************************************************************************************************************************************************/
 
 // => Lambdas can not access outside values - but since topranks is effectively final it can use.
+
         // Include all having top 3 ranks 
-         Set<Integer> topRanks = students.stream()
+        Set<Integer> topRanks = students.stream()
                                         .map(Student::getRank) // Extract ranks
                                         .distinct() // Remove duplicates
                                         .sorted() // Sort in ascending order
@@ -245,6 +353,30 @@ public class Stream {
 
         results.forEach(System.out::println);
 
+
+
+
+
+
+
+        // Using map() - Returns a Stream<List<String>>
+        List<List<String>> skillsList = students.stream()
+            .map(Student::getSkills)  // Each employee's skills list
+            .collect(Collectors.toList());
+
+        System.out.println("Using map(): " + skillsList);
+        // Output: [[Java, Spring, AWS], [JavaScript, React], [Python, Django, Machine Learning], [Java, Spring Boot]]
+
+        // Using flatMap() - Flattens List<List<String>> into List<String>
+        List<String> allSkills = students.stream()
+            .map(Student::getSkills)    // Stream<List<String>>
+            .flatMap(List::stream)       // Flatten Stream<String>
+            .distinct()                  // Remove duplicates
+            .collect(Collectors.toList());
+
+        System.out.println("Using flatMap(): " + allSkills);
+        // Output: [Java, Spring, AWS, JavaScript, React, Python, Django, Machine Learning, Spring Boot]
+
 }
 
 
@@ -252,4 +384,9 @@ public static String process(String name, int age) {
     return name + " is " + age + " years old.";
 }
 
+
+/********************************************************************************************************************************************************************************************************************/
+
+
 }
+

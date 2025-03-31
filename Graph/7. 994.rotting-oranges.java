@@ -1,4 +1,4 @@
-/*
+/* https://leetcode.com/problems/rotting-oranges/description/
     BFS will be used - since we want to rotten the oranges simultaneously
     also - here they have asked for minimum time to rotten the oranges.
  */
