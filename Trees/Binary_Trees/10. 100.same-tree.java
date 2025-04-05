@@ -5,9 +5,7 @@ package Trees.Binary_Trees;
  * [100] Same Tree
  */
 
-
-
-
+import Trees.TreeNode;
 
 class Solution {
     public boolean isSameTree(TreeNode p, TreeNode q) {

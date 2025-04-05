@@ -25,6 +25,8 @@ Output: [1, 2, 4, 8, 9, 6, 7, 3]
 
 import java.util.ArrayList;
 
+import Trees.TreeNode;
+
 class Solution {
     void leftBoundaryTraversal(TreeNode root, ArrayList<Integer> res) {
         if (root == null) return; // Base case: if the node is null, return.

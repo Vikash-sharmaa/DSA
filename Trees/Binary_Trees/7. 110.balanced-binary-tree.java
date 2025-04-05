@@ -1,3 +1,5 @@
+// https://leetcode.com/problems/balanced-binary-tree/description/
+
 package Trees.Binary_Trees;
 /*
  * @lc app=leetcode id=110 lang=java
@@ -5,6 +7,9 @@ package Trees.Binary_Trees;
  * [110] Balanced Binary Tree
  */
 
+ // Height balanced means - tree's left's height and right's height difference should be 1 or 0.
+
+import Trees.TreeNode;
 
 class Solution {
 

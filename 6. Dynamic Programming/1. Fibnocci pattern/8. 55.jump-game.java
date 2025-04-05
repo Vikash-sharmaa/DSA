@@ -49,8 +49,8 @@ class Solution {
         dp[n - 1] = true; // Base case: last index is always reachable from itself
     
         for (int i = n - 2; i >= 0; i--) {
-            for (int j = 1; j <= nums[i] && i + j < n; j++) { // Loop through valid jumps
-                if (dp[i + j]) { // Check if any jump leads to a reachable index
+            for (int j = 1; j <= nums[i]; j++) { // Loop through valid jumps
+                if (i + j < n && dp[i + j]) { // Check if any jump leads to a reachable index
                     dp[i] = true;
                     break; // No need to check further
                 }

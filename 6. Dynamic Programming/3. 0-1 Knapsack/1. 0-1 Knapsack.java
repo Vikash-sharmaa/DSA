@@ -66,7 +66,8 @@ class Solution {
         # just write the base case and then replace by for loop and inside for loop just copy paste the code of recursion and replace function call by DP value
         # Each cell of bottom up approach defines a sub problem -  Dp[W][n] - stores the answer when there was n elements and the capacity of 
 	            Knapsack was W.
-Ex. Dp[4][3] - stores the answer when there were 3 elements and the knapsack's capacity was 4.
+
+        Ex. Dp[4][3] - stores the answer when there were 3 elements and the knapsack's capacity was 4.
      */
     static int knapSackTabulation(int[] val, int[] wt, int capacity, int n) {
         int[][] dp = new int[n + 1][capacity + 1];

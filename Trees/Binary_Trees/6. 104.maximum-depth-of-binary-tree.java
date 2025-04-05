@@ -1,3 +1,5 @@
+// https://leetcode.com/problems/maximum-depth-of-binary-tree/description/
+
 package Trees.Binary_Trees;
 /*
  * @lc app=leetcode id=104 lang=java
@@ -5,6 +7,14 @@ package Trees.Binary_Trees;
  * Maximum Depth of Binary Tree || Height of Binary Tree
  */
 
+ /*
+    Given the root of a binary tree, return its maximum depth.
+
+    A binary tree's maximum depth is the number of nodes along the longest path from the root node down to 
+        the farthest leaf node.
+  */
+
+import Trees.TreeNode;
 
 class Solution {
     public int maxDepth(TreeNode root) {

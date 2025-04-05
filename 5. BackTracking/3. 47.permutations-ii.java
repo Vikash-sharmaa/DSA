@@ -32,7 +32,7 @@ class Solution {
             List<Integer> currentPermu = new ArrayList<>();
             // Convert the array into a list and store it in the result set
             for (int n : nums) currentPermu.add(n);
-            res.add(currentPermu); // Add to the set to handle duplicate permutations
+            res.add(currentPermu);
             return;
         }
 

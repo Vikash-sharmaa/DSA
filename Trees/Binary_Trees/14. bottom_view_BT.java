@@ -14,15 +14,17 @@ import java.util.Deque;
 import java.util.Map;
 import java.util.TreeMap;
 
-class Tuple {
+import Trees.TreeNode;
+
+class Pair {
     TreeNode root;
     int verticalLine; // Tracks the vertical line of the node.
     
     // Default constructor.
-    Tuple() {}
+    Pair() {}
 
     // Constructor with parameters.
-    Tuple(TreeNode root, int verticalLine) {
+    Pair(TreeNode root, int verticalLine) {
         this.root = root; // The current node in the tree.
         this.verticalLine = verticalLine; // The vertical line corresponding to the node.
     }
@@ -38,12 +40,12 @@ class Solution {
         if (root == null) return res;
         
         // Queue for BFS traversal, storing nodes and their vertical lines.
-        Deque<Tuple> queue = new ArrayDeque<>();
-        queue.offerLast(new Tuple(root, 0)); // Start with the root node at vertical line 0.
+        Deque<Pair> queue = new ArrayDeque<>();
+        queue.offerLast(new Pair(root, 0)); // Start with the root node at vertical line 0.
         
         // Perform BFS traversal.
         while (!queue.isEmpty()) {
-            Tuple front = queue.pollFirst(); // Remove the front node from the queue.
+            Pair front = queue.pollFirst(); // Remove the front node from the queue.
             TreeNode currentNode = front.root; // Extract the current node.
             int verticalLine = front.verticalLine; // Extract its vertical line.
             
@@ -52,12 +54,12 @@ class Solution {
             
             // If the current node has a left child, add it to the queue with vertical line -1.
             if (currentNode.left != null) {
-                queue.offerLast(new Tuple(currentNode.left, verticalLine - 1));
+                queue.offerLast(new Pair(currentNode.left, verticalLine - 1));
             }
             
             // If the current node has a right child, add it to the queue with vertical line +1.
             if (currentNode.right != null) {
-                queue.offerLast(new Tuple(currentNode.right, verticalLine + 1));
+                queue.offerLast(new Pair(currentNode.right, verticalLine + 1));
             }
         }
         

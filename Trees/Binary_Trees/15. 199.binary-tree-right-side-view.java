@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 
+import Trees.TreeNode;
+
 class Solution {
     public List<Integer> rightSideView(TreeNode root) {
         // Initialize the result list to store the right side view.

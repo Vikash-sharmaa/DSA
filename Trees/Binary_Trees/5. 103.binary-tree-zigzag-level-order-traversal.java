@@ -14,6 +14,8 @@ import java.util.Collections;
 import java.util.Deque;
 import java.util.List;
 
+import Trees.TreeNode;
+
 class Solution {
     public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
         // Initialize a double-ended queue for level-order traversal.

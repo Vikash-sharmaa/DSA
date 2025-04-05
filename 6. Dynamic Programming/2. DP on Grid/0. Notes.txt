@@ -6,7 +6,7 @@ Patterns:
 
 Steps:
 
-	1. Express everything in terms of (I,j).
+	1. Express everything in terms of (i,j).
 	2. Write base case.
 	3. Explore all paths.
 	4. Find max/min/feasible of all the paths.

@@ -1,3 +1,6 @@
+// https://leetcode.com/problems/binary-tree-paths/description/
+
+
 package Trees.Binary_Trees;
 /*
  * @lc app=leetcode id=257 lang=java
@@ -15,6 +18,8 @@ package Trees.Binary_Trees;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import Trees.TreeNode;
 
 class Solution {
     void binaryTreePaths(TreeNode root, List<String> res, List<String> temp) {

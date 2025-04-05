@@ -1,4 +1,5 @@
-/*
+/* https://leetcode.com/problems/n-queens-ii/
+
  * @lc app=leetcode id=52 lang=java
  *
  * Same as N-Queen 

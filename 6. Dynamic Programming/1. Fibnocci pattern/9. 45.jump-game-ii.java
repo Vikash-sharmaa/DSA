@@ -64,8 +64,8 @@ class Solution {
         dp[n - 1] = 0; // The last index requires 0 jumps to reach itself
     
         for (int i = n - 2; i >= 0; i--) { // Start from second last index
-            for (int j = 1; j <= nums[i] && i + j < n; j++) { // Loop through possible jumps
-                if (dp[i + j] != Integer.MAX_VALUE) { // Check if the next index is reachable
+            for (int j = 1; j <= nums[i]; j++) { // Loop through possible jumps
+                if (i + j < n && dp[i + j] != Integer.MAX_VALUE) { // Check if the next index is reachable
                     dp[i] = Math.min(dp[i], 1 + dp[i + j]); // Update the dp[i] with the minimum jumps
                 }
             }

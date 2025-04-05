@@ -39,11 +39,11 @@ class Solution {
         if(dp[idx]!=-1) return dp[idx];
 
         int minCost = Integer.MAX_VALUE;
-        for(int next=idx+1;next<=2*idx+1;next++){
+        for(int next=idx+1;next<=2*idx+2;next++){
             minCost=Math.min(minCost, minimumCoinsMemo(next, prices, dp));
         }
 
-        return dp[idx] = prices[idx-1] + (minCost == Integer.MAX_VALUE ? 0 : minCost);
+        return dp[idx] = prices[idx] + (minCost == Integer.MAX_VALUE ? 0 : minCost);
     }
 
 
@@ -76,7 +76,7 @@ class Solution {
         //return minimumCoinsRecursive(0, prices);
         int[] dp=new int[prices.length+1];
         Arrays.fill(dp, -1);
-        return minimumCoinsMemo(1,prices,dp);
+        return minimumCoinsMemo(0,prices,dp);
 
         //return minimumCoinsTabulation(prices);
     }

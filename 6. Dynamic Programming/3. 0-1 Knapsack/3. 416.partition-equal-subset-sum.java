@@ -1,4 +1,5 @@
-/*
+/* https://leetcode.com/problems/partition-equal-subset-sum/description/
+
  * @lc app=leetcode id=416 lang=java
  * s1 == s2 => s1-s2=0
  * 

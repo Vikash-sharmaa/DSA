@@ -57,6 +57,20 @@ class Solution {
         // Return the minimum of the two as we can stop at either of the last two steps
         return Math.min(minCostToReachLastStair, minCostToReachSecondLastStair);
     }
+
+    public int minCostClimbingStairsOptimized(int[] cost) {
+        int n = cost.length;
+        int prev2 = cost[0], prev1 = cost[1];
+    
+        for (int i = 3; i <= n; i++) {
+            int curr = cost[i - 1] + Math.min(prev1, prev2);
+            prev2 = prev1;
+            prev1 = curr;
+        }
+    
+        return Math.min(prev1, prev2); // Return the minimum of last two steps
+    }
+    
     public int minCostClimbingStairs(int[] cost) {
         int n=cost.length;
         // int reachLast = minCostClimbingStairsRecursive(n-1, cost);
@@ -73,5 +87,22 @@ class Solution {
         return minCostClimbingStairsTabulation(cost);
     }
 }
+
+
+/*
+  int minCostClimbingStairsMemo(int n,int[] cost,int[] dp){
+        if(n<=0) return 0;
+        if(n==1 || n==2) return cost[n-1];
+
+        if(dp[n]!=-1) return dp[n];
+        int oneStep = minCostClimbingStairsMemo(n-1, cost, dp);
+        int twoStep = minCostClimbingStairsMemo(n-2, cost, dp);
+
+        return dp[n] = cost[n-1] + Math.min(oneStep, twoStep);
+    }
+
+
+    passing length of array instead of indexes 
+ */
 
 

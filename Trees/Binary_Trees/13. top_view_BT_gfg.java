@@ -33,15 +33,17 @@ import java.util.Deque;
 import java.util.Map;
 import java.util.TreeMap;
 
-class Tuple {
+import Trees.TreeNode;
+
+class Pair {
     TreeNode root; // Represents the current node.
     int verticalLine; // Represents the vertical line (horizontal distance from root) of the node.
-    Tuple() {}
-    Tuple(TreeNode root, int verticalLine) {
+    Pair() {}
+    Pair(TreeNode root, int verticalLine) {
         this.root = root;
         this.verticalLine = verticalLine;
     }
-}
+} 
 
 class Solution {
     // Function to return a list of nodes visible from the top view from left to right in a binary tree.
@@ -52,12 +54,12 @@ class Solution {
         if (root == null) return res; // Edge case: if the tree is empty, return an empty list.
         
         // Queue to perform BFS while keeping track of each node's vertical line.
-        Deque<Tuple> queue = new ArrayDeque<>();
-        queue.offerLast(new Tuple(root, 0)); // Start BFS with the root node at vertical line 0.
+        Deque<Pair> queue = new ArrayDeque<>();
+        queue.offerLast(new Pair(root, 0)); // Start BFS with the root node at vertical line 0.
         
         // BFS traversal to populate the top view.
         while (!queue.isEmpty()) {
-            Tuple front = queue.pollFirst(); // Remove the node from the front of the queue.
+            Pair front = queue.pollFirst(); // Remove the node from the front of the queue.
             TreeNode currentNode = front.root; // The current node being processed.
             int verticalLine = front.verticalLine; // The vertical line of the current node.
             
@@ -68,12 +70,12 @@ class Solution {
             
             // Add the left child to the queue with a vertical line decreased by 1.
             if (currentNode.left != null) {
-                queue.offerLast(new Tuple(currentNode.left, verticalLine - 1));
+                queue.offerLast(new Pair(currentNode.left, verticalLine - 1));
             }
             
             // Add the right child to the queue with a vertical line increased by 1.
             if (currentNode.right != null) {
-                queue.offerLast(new Tuple(currentNode.right, verticalLine + 1));
+                queue.offerLast(new Pair(currentNode.right, verticalLine + 1));
             }
         }
         
