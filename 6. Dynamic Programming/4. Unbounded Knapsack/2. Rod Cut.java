@@ -25,6 +25,21 @@ class Solution {
         }
     }
 
+    int cutRodRecursive(int[] price, int n, int len) {
+        // Base case: if len == 0 or n == 0, no profit can be made
+        if (n == 0 || len == 0) return 0;
+    
+        // Length of the current piece is (n) because we are indexing from 1 to n
+        if (n <= len) {
+            int pick = price[n - 1] + cutRodRecursive(price, n, len - n); // Pick current piece (unbounded)
+            int dontPick = cutRodRecursive(price, n - 1, len);            // Skip to smaller piece
+            return Math.max(pick, dontPick);
+        } else {
+            return cutRodRecursive(price, n - 1, len);  // Piece too big, skip it
+        }
+    }
+    
+
 
 
     

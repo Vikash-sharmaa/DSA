@@ -1,3 +1,4 @@
+// 
 package Graph;
 
 /*
@@ -11,11 +12,13 @@ package Graph;
  */
 
  /*
-    An island’s shape is determined by the relative positions of its land cells (1s). Instead of storing absolute positions of land cells, we normalize them by using the first encountered cell (the base cell) as a reference.
+    An island’s shape is determined by the relative positions of its land cells (1s). Instead of storing absolute positions 
+        of land cells, we normalize them by using the first encountered cell (the base cell) as a reference.
 
     How We Normalize the Shape:-
 
-    When we start DFS or BFS from an unvisited land cell (row, col), we record its relative position with respect to the first (base) cell (baseRow, baseCol).
+    When we start DFS or BFS from an unvisited land cell (row, col), we record its relative position with respect to the first (base) 
+        cell (baseRow, baseCol).
     For each land cell (row, col) we store: (row - baseRow) + "," + (col - baseCol)
     This ensures that if two islands have the same shape but appear in different parts of the grid, they will still be considered identical.
   */

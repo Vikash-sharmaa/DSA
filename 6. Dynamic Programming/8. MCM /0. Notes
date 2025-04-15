@@ -31,7 +31,24 @@ General Format :-
 
 Steps :-
 
-	1. Find I and j values.
-	2. Find right BC.
-    3. Move k => I to j
+    1. Find i and j
+            Determine the range you are solving for
+            Usually: dp[i][j] → answer for subarray/substring from i to j
+    2. Find base condition
+            When i == j (1 element), or length = 0
+            Set dp[i][j] = 0 or some cost, depending on problem
+    3. Find k loop scheme (partition point)
+            Try every partition point between i and j:
+            for (int k = i; k < j; k++)
+            OR sometimes: for (int k = i+1; k <= j; k++)
+    4. Calculate answer from temporary answers
+            Recurrence:
+            dp[i][j] = min(dp[i][k] + dp[k+1][j] + cost(i,j))
+            Use a temp variable to store best/min/max result
+
+
+Base Condition :-
+
+1. Think of smallest valid input
+2. Think of smallest invalid input
 

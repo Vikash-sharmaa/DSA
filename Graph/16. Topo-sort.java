@@ -18,8 +18,18 @@ class Solution {
                 dfs(neighbor, adj, visited, stack);
             }
         }
-        
+        /*
+          
+            When you do a post-order DFS, it means:
+                First finish all the neighbors (dependencies),
+                Then process the current node.
+            By pushing the node onto the stack after exploring all its neighbors, you're ensuring that:
+                Nodes with no outgoing edges (or all visited) are pushed first.
+                Their dependents come later.
+         */
+        // everything would have been done - sequentially - as DFS is completed
         // Once all neighbors are explored, push the current node onto the stack
+        // Parents (or prerequisites/dependencies) come before their children (dependents) in the final ordering.
         stack.offerLast(node);
     }
 

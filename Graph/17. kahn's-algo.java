@@ -23,6 +23,7 @@ class Solution {
                 inDegree[neighbor]--; // Remove edge effect by decrementing in-degree
 
                 // If in-degree becomes zero, add neighbor to queue
+                // We only process a node when all its dependencies are processed.
                 if (inDegree[neighbor] == 0) {
                     queue.offerLast(neighbor);
                 }

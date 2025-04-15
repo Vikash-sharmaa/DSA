@@ -46,6 +46,7 @@ class Solution {
             }
         }
 
+        //  No node has inDegree == 0 ⇒ queue is empty from start ⇒ no node gets processed ⇒ cycle detected
         // Step 4: Check if all nodes were processed
         return count != n; // If count < n, a cycle exists (some nodes couldn't be processed)
     }

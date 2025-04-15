@@ -34,7 +34,7 @@ class Solution {
     // Function to find the largest number after k swaps.
     static String swap (String s,int i,int j){
         char[] sChar = s.toCharArray();
-        char temp=sChar[i];
+        har temp=sChar[i];
         sChar[i]=sChar[j];
         sChar[j]=temp;
         return new String(sChar);
