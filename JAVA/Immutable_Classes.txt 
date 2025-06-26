@@ -199,6 +199,10 @@ public final class Student {
 
 Prevents accidental updates to data fetched from the database.
 Promotes immutability in ORM frameworks.
+
+when dealing with Embaddable and Embadded , we should make embaddble class as Immutable.
+
+
 3️⃣ Multi-threading (Thread-Safe Objects)
 
 Use Case:

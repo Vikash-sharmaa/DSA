@@ -8,7 +8,7 @@
     O(m×n) the worst case occurs when all pixels need to be colored, requiring a queue of size O(m×n) and a visited array of the same size.
  */
 
-// @lc code=start
+// @lc code=start     
 
 import java.util.ArrayDeque;
 import java.util.Deque;

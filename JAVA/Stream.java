@@ -1,13 +1,15 @@
 /*
         Student::getMarks works in streams and functional interfaces because Java automatically provides the instance.
-        If you try Student::getMarks outside a functional interface, you'll get an error because Java won't know which Student instance to call it on.
+        If you try Student::getMarks outside a functional interface, you'll get an error because Java won't know which Student instance to 
+                call it on.
  */
 
 
  /*
         
         When to Use mapToInt(), mapToDouble(), or mapToLong()
-        Use primitive streams (IntStream, DoubleStream, LongStream) when you need to work with numeric values to improve performance. These avoid unnecessary boxing and unboxing, making operations more efficient.
+        Use primitive streams (IntStream, DoubleStream, LongStream) when you need to work with numeric values to improve performance. 
+        These avoid unnecessary boxing and unboxing, making operations more efficient.
 
         ✅ Use mapToInt(), mapToDouble(), mapToLong() when:
 
@@ -83,7 +85,7 @@ public class Stream {
         List<Student> students = Arrays.asList(
             new Student(1, "Rohit", "Kumar", 30, "Male", "Mechanical Engineering", 2015, "Mumbai", 122),
             new Student(2, "Pulkit", "Singh", 56, "Male", "Computer Engineering", 2018, "Delhi", 67),
-            new Student(3, "Ankit", "Patil", 25, "Female", "Mechanical Engineering", 2019, "Kerala", 164)
+            new Student(3, "Ankita", "Patil", 25, "Female", "Mechanical Engineering", 2019, "Kerala", 164)
         );
 
 /********************************************************************************************************************************************************************************************************************/
@@ -233,6 +235,9 @@ public class Stream {
                                                .sorted(Comparator.comparingInt(Student :: getRank))
                                                .collect(Collectors.toList());
 
+
+
+                                               
         // Find Students in Delhi and Sort by Name
 
         List<Student> studentDelhiSorted = students.stream()
@@ -244,6 +249,8 @@ public class Stream {
                                                 .filter(dt -> dt.getCity().equals("Delhi"))
                                                 .sorted(Comparator.comparing(Student::getFirstName))
                                                 .collect(Collectors.toList());
+
+
 
         // for descending order
 

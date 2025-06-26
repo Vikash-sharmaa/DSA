@@ -150,7 +150,7 @@ Most asked SQL queries-
         select * from emp
             minus
         select * from emp
-        where rownum <=(select count(*)-2 from emp);
+        where rownum <=(select count(*)-2 from emp); //(2 records)
 
 
         select * from (select rownum r from emp)

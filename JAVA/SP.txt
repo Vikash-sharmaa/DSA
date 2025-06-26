@@ -111,12 +111,6 @@ Let’s compare both and understand why a cursor is better when returning multip
 /********************************************************************************************************************************************************************************************************************/
 
 
-
-
-
-
-
-
 Question:
     Write an Oracle stored procedure named employee that:
 
@@ -525,4 +519,44 @@ Expose an API to fetch the joined data.
 
             🔹 Use Case: SELECT * FROM ORDERS WHERE UPPER(status) = 'SHIPPED';
 
+/********************************************************************************************************************************************************************************************************************/
 
+Clustered Index:
+A clustered index determines the physical order of data rows in a table. There can be only one clustered index per table because data rows can be physically sorted in only one order. By default, the primary key becomes the clustered index.
+➡️ Example: Data sorted by EmpId in the table itself.
+
+Non-Clustered Index:
+A non-clustered index is a separate structure from the table that contains the indexed column values and pointers to the actual data rows. Multiple non-clustered indexes can exist on a table. It does not affect the physical order of data.
+➡️ Example: Index on Name column pointing to employee records.
+
+Key Difference:
+
+Clustered Index physically sorts the data.
+Non-Clustered Index creates a lookup structure pointing to unsorted table data.
+
+
+📌 Example: Clustered Index
+
+Table: Employee
+
+EmpId (PK)	Name	Dept
+102	Vikash	IT
+103	Neha	HR
+101	Rahul	IT
+Clustered Index on EmpId (default for primary key)
+➡️ Data stored on disk like this:
+
+EmpId	Name	Dept
+101	Rahul	IT
+102	Vikash	IT
+103	Neha	HR
+Query:
+
+SELECT * FROM Employee WHERE EmpId = 102;
+➡️ Database directly jumps to EmpId = 102 because data is physically ordered.
+
+📌 Example: Non-Clustered Index
+
+Create a non-clustered index on Name:
+
+CREATE NONCLUSTERED INDEX idx_name ON Employee(Name);
